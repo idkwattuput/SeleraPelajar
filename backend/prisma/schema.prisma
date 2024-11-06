@@ -1,0 +1,128 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CUSTOMER
+  SELLER
+}
+
+enum OrderStatus {
+  PENDING
+  PREPARING
+  COMPLETED
+  CANCELLED
+}
+
+enum CartStatus {
+  ACTIVE
+  ORDERED
+}
+
+model Users {
+  id            String   @id @default(uuid())
+  first_name    String
+  last_name     String
+  email         String   @unique
+  password      String
+  role          Role
+  refresh_token String?  @unique
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+  Cafes         Cafes[]
+  Orders        Orders[]
+  Carts         Carts[]
+}
+
+model Cafes {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  image       String
+  block       String
+  lot         String
+  is_open     Boolean
+  seller_id   String
+  seller      Users    @relation(fields: [seller_id], references: [id])
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  Items       Items[]
+  Orders      Orders[]
+  Carts       Carts[]
+}
+
+model Category {
+  id         String   @id @default(uuid())
+  name       String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  Items      Items[]
+}
+
+model Items {
+  id           String       @id @default(uuid())
+  name         String
+  description  String
+  price        Decimal      @db.Decimal(10, 2)
+  image        String
+  is_available Boolean
+  cafe_id      String
+  cafe         Cafes        @relation(fields: [cafe_id], references: [id])
+  category_id  String
+  category     Category     @relation(fields: [category_id], references: [id])
+  created_at   DateTime     @default(now())
+  updated_at   DateTime     @updatedAt
+  OrderItems   OrderItems[]
+  CartItems    CartItems[]
+}
+
+model Orders {
+  id          String       @id @default(uuid())
+  total_price Decimal      @db.Decimal(10, 2)
+  status      OrderStatus  @default(PENDING)
+  customer_id String
+  customer    Users        @relation(fields: [customer_id], references: [id])
+  cafe_id     String
+  cafe        Cafes        @relation(fields: [cafe_id], references: [id])
+  created_at  DateTime     @default(now())
+  updated_at  DateTime     @updatedAt
+  OrderItems  OrderItems[]
+}
+
+model OrderItems {
+  id       String  @id @default(uuid())
+  quantity Int
+  note     String?
+  order_id String
+  order    Orders  @relation(fields: [order_id], references: [id])
+  item_id  String
+  item     Items   @relation(fields: [item_id], references: [id])
+}
+
+model Carts {
+  id          String      @id @default(uuid())
+  total_price Decimal?    @db.Decimal(10, 2)
+  status      CartStatus  @default(ACTIVE)
+  customer_id String
+  customer    Users       @relation(fields: [customer_id], references: [id])
+  cafe_id     String
+  cafe        Cafes       @relation(fields: [cafe_id], references: [id])
+  created_at  DateTime    @default(now())
+  updated_at  DateTime    @updatedAt
+  CartItems   CartItems[]
+}
+
+model CartItems {
+  id       String  @id @default(uuid())
+  quantity Int
+  note     String?
+  cart_id  String
+  cart     Carts   @relation(fields: [cart_id], references: [id])
+  item_id  String
+  item     Items   @relation(fields: [item_id], references: [id])
+}
