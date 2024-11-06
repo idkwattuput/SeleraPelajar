@@ -1,5 +1,6 @@
 import express from "express";
 import type { Express } from "express";
+import path from "path";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { logger } from "./middlewares/log";
@@ -20,6 +21,7 @@ export class App {
     this.cafeRoute = cafeRoute;
     this.app = express();
     this.setMiddlewares();
+    this.handleStaticFile();
     this.setRoutes();
     this.handleInvalidRoutes();
 
@@ -53,6 +55,11 @@ export class App {
     this.app.use((_, res) => {
       res.status(404).json({ message: "Route not found" });
     });
+  }
+
+  // Server static file
+  handleStaticFile() {
+    this.app.use("/", express.static(path.join(__dirname, "../public")));
   }
 
   handleError() {
