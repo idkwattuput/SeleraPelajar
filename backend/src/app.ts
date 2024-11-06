@@ -8,13 +8,16 @@ import type { AuthRoute } from "./routes/auth-route";
 import { credentials } from "./middlewares/credentials";
 import { corsOptions } from "./config/cors-options";
 import { errorHandler } from "./middlewares/error";
+import type { CafeRoute } from "./routes/cafe-route";
 
 export class App {
   authRoute: AuthRoute;
+  cafeRoute: CafeRoute;
   app: Express;
 
-  constructor(authRoute: AuthRoute) {
+  constructor(authRoute: AuthRoute, cafeRoute: CafeRoute) {
     this.authRoute = authRoute;
+    this.cafeRoute = cafeRoute;
     this.app = express();
     this.setMiddlewares();
     this.setRoutes();
@@ -42,7 +45,7 @@ export class App {
     this.app.use(verifyJWT);
 
     // Example of a route requiring JWT
-    // this.app.use("/api/v1/todos", todosRoute);
+    this.app.use("/api/v1/cafes", this.cafeRoute.router);
   }
 
   // Handle 404 for non-existent routes
