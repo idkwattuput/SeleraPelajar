@@ -10,7 +10,7 @@ export const verifyJWT = (req: Request, res: Response, next: NextFunction) => {
     if (err) {
       return res.status(403).json({ message: "Forbidden" });
     }
-    (req as any).user = (decoded as { id: number }).id;
+    (req as any).user = decoded;
     next();
   });
 };

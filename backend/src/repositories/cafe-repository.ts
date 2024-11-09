@@ -16,6 +16,14 @@ export class CafeRepository {
   async find(id: string) {
     return this.prisma.cafes.findUnique({
       where: { id: id },
+      include: {
+        Items: {
+          include: {
+            category: true,
+          },
+          orderBy: [{ category: { name: "asc" } }, { is_available: "desc" }],
+        },
+      },
     });
   }
 }

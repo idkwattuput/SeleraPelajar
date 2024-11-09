@@ -105,24 +105,30 @@ model OrderItems {
 }
 
 model Carts {
-  id          String      @id @default(uuid())
   total_price Decimal?    @db.Decimal(10, 2)
   status      CartStatus  @default(ACTIVE)
   customer_id String
-  customer    Users       @relation(fields: [customer_id], references: [id])
+  customer    Users       @relation(fields: [customer_id], references: [id], onDelete: Cascade)
   cafe_id     String
-  cafe        Cafes       @relation(fields: [cafe_id], references: [id])
+  cafe        Cafes       @relation(fields: [cafe_id], references: [id], onDelete: Cascade)
   created_at  DateTime    @default(now())
   updated_at  DateTime    @updatedAt
   CartItems   CartItems[]
+
+  @@id([cafe_id, customer_id])
 }
 
 model CartItems {
-  id       String  @id @default(uuid())
-  quantity Int
-  note     String?
-  cart_id  String
-  cart     Carts   @relation(fields: [cart_id], references: [id])
-  item_id  String
-  item     Items   @relation(fields: [item_id], references: [id])
+  quantity    Int
+  note        String?
+  is_note     Boolean
+  cafe_id     String
+  customer_id String
+  cart        Carts    @relation(fields: [cafe_id, customer_id], references: [cafe_id, customer_id], onDelete: Cascade)
+  item_id     String
+  item        Items    @relation(fields: [item_id], references: [id])
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  @@id([cafe_id, customer_id, item_id, is_note])
 }

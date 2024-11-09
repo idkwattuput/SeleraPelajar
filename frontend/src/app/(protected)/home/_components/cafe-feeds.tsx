@@ -82,7 +82,9 @@ export default function CafeFeeds() {
                   <hr className="my-4" />
                   <CardTitle>{cafe.name}</CardTitle>
                   <CardDescription>{cafe.description}</CardDescription>
-                  <CardDescription className="flex items-center mt-4"><MapPin className="h-4 w-4" />{cafe.block}-{cafe.lot}</CardDescription>
+                  <CardDescription className="flex items-center mt-4">
+                    <MapPin className="h-4 w-4" />{cafe.block}-{cafe.lot}
+                  </CardDescription>
                 </Card>
               )}
             </Link>

@@ -1,3 +1,5 @@
+import { Item } from "./item";
+
 export interface Cafe {
   id: string;
   name: string;
@@ -7,4 +9,5 @@ export interface Cafe {
   lot: string;
   is_open: string;
   seller_id: string;
+  Items: Item[];
 }
