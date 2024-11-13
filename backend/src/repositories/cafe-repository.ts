@@ -21,7 +21,7 @@ export class CafeRepository {
           include: {
             category: true,
           },
-          orderBy: [{ category: { name: "asc" } }, { is_available: "desc" }],
+          orderBy: [{ is_available: "desc" }, { category: { name: "asc" } }],
         },
       },
     });

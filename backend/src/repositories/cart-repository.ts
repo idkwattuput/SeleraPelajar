@@ -14,6 +14,7 @@ export class CartRepository {
           cafe_id: cafeId,
           customer_id: customerId,
         },
+        status: "ACTIVE",
       },
       include: {
         CartItems: {
@@ -41,6 +42,7 @@ export class CartRepository {
           cafe_id: cafeId,
           customer_id: customerId,
         },
+        status: "ACTIVE",
       },
       create: {
         total_price: quantity * price,
@@ -106,9 +108,10 @@ export class CartRepository {
           cafe_id: cafeId,
           customer_id: customerId,
         },
+        status: "ACTIVE",
       },
       data: {
-        total_price: { decrement: item.price * quantity },
+        total_price: { decrement: Number(item.price) * quantity },
         CartItems: {
           update: {
             where: {

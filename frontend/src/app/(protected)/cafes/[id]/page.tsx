@@ -9,7 +9,7 @@ import { useEffect, useState } from "react"
 import ItemFeeds from "./_components/item-feeds";
 import SearchItems from "./_components/search-item";
 import CartSection from "./_components/cart-section";
-import { CartItem } from "@/types/cart";
+import { Cart } from "@/types/cart";
 import { Item } from "@/types/item";
 
 export default function Cafe() {
@@ -18,7 +18,7 @@ export default function Cafe() {
   const [cafes, setCafes] = useState<Cafe>({})
   const [items, setItems] = useState<Item[]>([])
   const [filteredItems, setFilteredItems] = useState<Item[]>([])
-  const [carts, setCarts] = useState<CartItem[]>([])
+  const [carts, setCarts] = useState<Cart>(null)
   const [notFound, setNotFound] = useState(false)
   const [loading, setLoading] = useState(true)
 
@@ -28,10 +28,10 @@ export default function Cafe() {
         setLoading(true)
         const response = await axiosPrivate.get(`/api/v1/cafes/${id}`)
         const anotherResponse = await axiosPrivate.get(`/api/v1/carts/cafes/${id}`)
-        setCafes(response.data.data)
+        setCafes(response.data.data || {})
         setItems(response.data.data.Items)
         setFilteredItems(response.data.data.Items)
-        setCarts(anotherResponse.data.data?.CartItems || [])
+        setCarts(anotherResponse.data.data || {})
         setLoading(false)
       } catch (error) {
         setLoading(false)
@@ -44,7 +44,7 @@ export default function Cafe() {
     getCafe(params.id)
   }, [params.id])
 
-  function onCartChange(newCart: CartItem[]) {
+  function onCartChange(newCart: Cart) {
     setCarts(newCart)
   }
 

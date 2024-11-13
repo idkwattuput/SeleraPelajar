@@ -6,14 +6,14 @@ import { Item } from "@/types/item"
 import { Loader2, Plus, Trash } from "lucide-react"
 import Image from "next/image"
 import AddItemDialog from "./add-item-dialog"
-import { CartItem } from "@/types/cart"
+import { Cart, CartItem } from "@/types/cart"
 import useAxiosPrivate from "@/hooks/use-axios-private"
 import { useState } from "react"
 import { Badge } from "@/components/ui/badge"
 
 interface Props {
   items: Item[]
-  handleNewCart: (newCart: CartItem[]) => void
+  handleNewCart: (newCart: Cart) => void
 }
 
 export default function ItemFeeds({ items, handleNewCart }: Props) {
@@ -34,7 +34,7 @@ export default function ItemFeeds({ items, handleNewCart }: Props) {
           note: null
         })
       )
-      handleNewCart(response.data.data.CartItems)
+      handleNewCart(response.data.data)
       setPending(false)
     } catch (error) {
       setPending(false)
@@ -90,7 +90,7 @@ export default function ItemFeeds({ items, handleNewCart }: Props) {
             className="p-4 bg-secondary flex justify-between items-start transition ease-in-out hover:-translate-y-1 hover:scale-105"
           >
             <div>
-              <CardTitle>{item.name}</CardTitle>
+              <CardTitle className="capitalize">{item.name}</CardTitle>
               <p>RM {Number(item.price).toFixed(2)}</p>
               <CardDescription>{item.description}</CardDescription>
             </div>

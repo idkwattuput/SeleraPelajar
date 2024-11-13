@@ -105,7 +105,7 @@ model OrderItems {
 }
 
 model Carts {
-  total_price Decimal?    @db.Decimal(10, 2)
+  total_price Decimal     @db.Decimal(10, 2)
   status      CartStatus  @default(ACTIVE)
   customer_id String
   customer    Users       @relation(fields: [customer_id], references: [id], onDelete: Cascade)

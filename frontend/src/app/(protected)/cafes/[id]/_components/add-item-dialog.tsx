@@ -37,7 +37,7 @@ export default function AddItemDialog({ children, item, onNewCart }: Props) {
           note: note ? note : null
         })
       )
-      onNewCart(response.data.data.CartItems)
+      onNewCart(response.data.data)
       setQuantity(1)
       setNote("")
       setPending(false)
