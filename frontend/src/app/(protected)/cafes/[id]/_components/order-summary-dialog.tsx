@@ -8,9 +8,10 @@ import { ReactNode, useState } from "react";
 interface Props {
   children: ReactNode
   cart: Cart
+  resetCart: () => void
 }
 
-export default function OrderSummaryDialog({ children, cart }: Props) {
+export default function OrderSummaryDialog({ children, cart, resetCart }: Props) {
   const axiosPrivate = useAxiosPrivate()
   const [open, setOpen] = useState(false)
   const [pending, setPending] = useState(false)
@@ -23,7 +24,7 @@ export default function OrderSummaryDialog({ children, cart }: Props) {
           cafeId: cart.cafe_id
         })
       )
-      console.log(response.data.data)
+      resetCart()
       setOpen(false)
       setPending(false)
     } catch (error) {

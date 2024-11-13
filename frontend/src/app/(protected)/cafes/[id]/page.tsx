@@ -18,7 +18,7 @@ export default function Cafe() {
   const [cafes, setCafes] = useState<Cafe>({})
   const [items, setItems] = useState<Item[]>([])
   const [filteredItems, setFilteredItems] = useState<Item[]>([])
-  const [carts, setCarts] = useState<Cart>(null)
+  const [carts, setCarts] = useState<Cart | null>(null)
   const [notFound, setNotFound] = useState(false)
   const [loading, setLoading] = useState(true)
 
@@ -55,6 +55,10 @@ export default function Cafe() {
     setFilteredItems(items.filter((item) => item.name.toLowerCase().includes(value.toLowerCase().trim())))
   }
 
+  function handleResetCart() {
+    setCarts(null)
+  }
+
   return (
     <div className="p-4">
       {notFound ? (
@@ -77,7 +81,7 @@ export default function Cafe() {
             </div>
             <div className="w-1/4">
               <SkeletonWrapper isLoading={loading}>
-                <CartSection carts={carts} onNewCart={onCartChange} />
+                <CartSection carts={carts} onNewCart={onCartChange} resetCart={handleResetCart} />
               </SkeletonWrapper>
             </div>
           </div>

@@ -11,9 +11,10 @@ import OrderSummaryDialog from "./order-summary-dialog"
 interface Props {
   carts: Cart
   onNewCart: (newCart: Cart) => void
+  resetCart: () => void
 }
 
-export default function CartSection({ carts, onNewCart }: Props) {
+export default function CartSection({ carts, onNewCart, resetCart }: Props) {
   const axiosPrivate = useAxiosPrivate()
   const [pending, setPending] = useState(false)
 
@@ -103,7 +104,7 @@ export default function CartSection({ carts, onNewCart }: Props) {
       <div>
         Total: RM <span>{Number(carts.total_price).toFixed(2)}</span>
       </div>
-      <OrderSummaryDialog cart={carts}>
+      <OrderSummaryDialog cart={carts} resetCart={resetCart}>
         <Button
           disabled={pending}
           className="w-full"
