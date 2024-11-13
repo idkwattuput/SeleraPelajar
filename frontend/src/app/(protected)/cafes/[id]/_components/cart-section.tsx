@@ -33,6 +33,10 @@ export default function CartSection({ carts, onNewCart, resetCart }: Props) {
       )
       onNewCart(response.data.data)
       setPending(false)
+      if (response.data.data.CartItems.length === 1) {
+        localStorage.setItem("counter", "1")
+        window.dispatchEvent(new Event("cartChange"));
+      }
     } catch (error) {
       setPending(false)
       console.log(error)
@@ -52,13 +56,18 @@ export default function CartSection({ carts, onNewCart, resetCart }: Props) {
       )
       onNewCart(response.data.data)
       setPending(false)
+      if (response.data.data.CartItems.length === 0) {
+        const counter = localStorage.getItem("counter")
+        localStorage.setItem("counter", String(Number(counter) - 1))
+        window.dispatchEvent(new Event("cartChange"));
+      }
     } catch (error) {
       setPending(false)
       console.log(error)
     }
   }
 
-  if (!carts || !carts.CartItems) {
+  if (!carts || !carts.CartItems || carts.CartItems.length <= 0) {
     return (
       <Card className="p-4">
         <div>No item in the cart yet.</div>

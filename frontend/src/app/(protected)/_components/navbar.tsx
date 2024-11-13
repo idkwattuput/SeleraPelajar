@@ -1,5 +1,6 @@
 "use client";
 
+import SkeletonWrapper from "@/components/skeleton-wrapper";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -8,15 +9,16 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import useAxiosPrivate from "@/hooks/use-axios-private";
 import axios from "@/lib/axios";
 import {
-  CircleDollarSign,
+  ShoppingBasket,
   CircleUser,
   Menu,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const items = [
   { label: "Home", href: "/home" },
@@ -42,6 +44,30 @@ export default function Navbar() {
 
 function DesktopNavbar() {
   const router = useRouter()
+  const [counter, setCounter] = useState(localStorage.getItem("counter"))
+
+
+  useEffect(() => {
+    async function getCarts() {
+      try {
+        setCounter(localStorage.getItem("counter"))
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    getCarts()
+
+    const handleCartChange = () => {
+      getCarts();
+    };
+
+    window.addEventListener("cartChange", handleCartChange);
+
+    return () => {
+      window.removeEventListener("cartChange", handleCartChange);
+    };
+  }, [])
 
   async function logout() {
     try {
@@ -60,6 +86,14 @@ function DesktopNavbar() {
         <h1 className="text-3xl font-bold italic">Selera Pelajar</h1>
       </div>
       <ul className="flex items-center gap-8">
+        <Link href={"/carts"}
+          className="w-full"
+        >
+          <Button variant="ghost" className="font-bold">
+            <ShoppingBasket className="w-4 h-4" />
+            {Number(counter) > 0 && counter}
+          </Button>
+        </Link>
         {items.map((item) => (
           <NavbarItem key={item.label} lable={item.label} link={item.href} />
         ))}
@@ -96,6 +130,30 @@ function DesktopNavbar() {
 function MobileNavbar() {
   const router = useRouter()
   const [open, setOpen] = useState(false)
+  const [counter, setCounter] = useState(localStorage.getItem("counter"))
+
+
+  useEffect(() => {
+    async function getCarts() {
+      try {
+        setCounter(localStorage.getItem("counter"))
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    getCarts()
+
+    const handleCartChange = () => {
+      getCarts();
+    };
+
+    window.addEventListener("cartChange", handleCartChange);
+
+    return () => {
+      window.removeEventListener("cartChange", handleCartChange);
+    };
+  }, [])
 
   async function logout() {
     try {
@@ -116,6 +174,14 @@ function MobileNavbar() {
       </div>
 
       <div className="flex items-center gap-2">
+        <Link href={"/carts"}
+          className="w-full"
+        >
+          <Button variant="ghost" className="font-bold">
+            <ShoppingBasket className="w-4 h-4" />
+            {Number(counter) > 0 && counter}
+          </Button>
+        </Link>
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild>
             <Button
