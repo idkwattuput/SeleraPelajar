@@ -7,6 +7,12 @@ export class CartRepository {
     this.prisma = prisma;
   }
 
+  async findAll(customerId: string) {
+    return this.prisma.carts.findMany({
+      where: { customer_id: customerId },
+    });
+  }
+
   async findAllCartItems(cafeId: string, customerId: string) {
     return this.prisma.carts.findUnique({
       where: {

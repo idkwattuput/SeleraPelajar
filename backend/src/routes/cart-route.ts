@@ -13,11 +13,12 @@ export class CartRoute {
 
   private setRoute() {
     this.router
-      .route("/cafes/:cafeId")
-      .get(this.cartController.getCart.bind(this.cartController));
-    this.router
       .route("/")
+      .get(this.cartController.getCarts.bind(this.cartController))
       .post(this.cartController.addToCart.bind(this.cartController))
       .put(this.cartController.decreaseQuantity.bind(this.cartController));
+    this.router
+      .route("/cafes/:cafeId")
+      .get(this.cartController.getCart.bind(this.cartController));
   }
 }

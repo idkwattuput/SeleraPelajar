@@ -2,12 +2,12 @@
 import { cookies } from "next/headers";
 
 export async function getAccessToken() {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   return cookieStore.get("SPAT")?.value;
 }
 
 export async function setAccessToken(accessToken: string) {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   cookieStore.set("SPAT", accessToken, {
     httpOnly: true,
     secure: true,
@@ -17,6 +17,6 @@ export async function setAccessToken(accessToken: string) {
 }
 
 export async function getRefreshToken() {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   return cookieStore.get("SPRT")?.value;
 }

@@ -43,15 +43,12 @@ export class OrderRepository {
         },
       });
 
-      await p.carts.update({
+      await p.carts.delete({
         where: {
           cafe_id_customer_id: {
             cafe_id: cafeId,
             customer_id: customerId,
           },
-        },
-        data: {
-          status: "ORDERED",
         },
       });
 

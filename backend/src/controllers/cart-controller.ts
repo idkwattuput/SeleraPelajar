@@ -8,12 +8,20 @@ export class CartController {
     this.cartRepository = cartRepository;
   }
 
+  async getCarts(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userId = (req as any).user.id;
+      const carts = await this.cartRepository.findAll(userId);
+      return res.json({ data: carts });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async getCart(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = (req as any).user.id;
-      console.log(userId);
       const cafeId = req.params.cafeId;
-      console.log(cafeId);
       const cartItems = await this.cartRepository.findAllCartItems(
         cafeId,
         userId,
