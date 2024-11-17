@@ -1,4 +1,5 @@
 import { App } from "./app";
+import { Server as SocketIOServer } from "socket.io";
 import { prisma } from "./database/db";
 import { UserRepository } from "./repositories/user-repository";
 import { AuthController } from "./controllers/auth-controller";
@@ -32,4 +33,18 @@ const orderRoute = new OrderRoute(orderController);
 
 const app = new App(authRoute, cafeRoute, cartRoute, orderRoute);
 
-app.start(PORT);
+const server = app.start(PORT);
+
+export const io = new SocketIOServer(server, {
+  cors: {
+    origin: "*",
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log("New client connected");
+
+  socket.on("disconnect", () => {
+    console.log("Client disconnected");
+  });
+});

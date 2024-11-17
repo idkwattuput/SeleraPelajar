@@ -10,6 +10,10 @@ export class CartRepository {
   async findAll(customerId: string) {
     return this.prisma.carts.findMany({
       where: { customer_id: customerId },
+      include: {
+        cafe: true,
+        CartItems: true,
+      },
     });
   }
 

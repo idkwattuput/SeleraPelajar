@@ -1,9 +1,35 @@
-import type { PrismaClient } from "@prisma/client";
+import type { OrderStatus, PrismaClient } from "@prisma/client";
 
 export class OrderRepository {
   prisma: PrismaClient;
   constructor(prisma: PrismaClient) {
     this.prisma = prisma;
+  }
+
+  async findAllCurrentOrder(customerId: string) {
+    return this.prisma.orders.findMany({
+      where: {
+        customer_id: customerId,
+        status: { notIn: ["COMPLETED", "CANCELLED"] },
+      },
+      include: {
+        cafe: true,
+        OrderItems: true,
+      },
+      orderBy: {
+        created_at: "asc",
+      },
+    });
+  }
+
+  async find(id: string) {
+    return this.prisma.orders.findUnique({
+      where: { id: id },
+      include: {
+        cafe: true,
+        OrderItems: true,
+      },
+    });
   }
 
   async save(cafeId: string, customerId: string) {
@@ -53,6 +79,19 @@ export class OrderRepository {
       });
 
       return newOrder;
+    });
+  }
+
+  async update(id: string, status: OrderStatus) {
+    return this.prisma.orders.update({
+      where: { id: id },
+      data: {
+        status: status,
+      },
+      include: {
+        cafe: true,
+        OrderItems: true,
+      },
     });
   }
 }

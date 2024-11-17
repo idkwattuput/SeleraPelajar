@@ -14,6 +14,11 @@ export class OrderRoute {
   private setRoute() {
     this.router
       .route("/")
+      .get(this.orderController.getCurrentOrders.bind(this.orderController))
       .post(this.orderController.createOrder.bind(this.orderController));
+    this.router
+      .route("/:id")
+      .get(this.orderController.getOrder.bind(this.orderController))
+      .put(this.orderController.updateOrder.bind(this.orderController));
   }
 }

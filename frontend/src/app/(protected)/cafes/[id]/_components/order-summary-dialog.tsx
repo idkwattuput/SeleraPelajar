@@ -3,7 +3,9 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, Di
 import useAxiosPrivate from "@/hooks/use-axios-private";
 import { Cart } from "@/types/cart";
 import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { ReactNode, useState } from "react";
+import { toast } from "sonner";
 
 interface Props {
   children: ReactNode
@@ -13,6 +15,7 @@ interface Props {
 
 export default function OrderSummaryDialog({ children, cart, resetCart }: Props) {
   const axiosPrivate = useAxiosPrivate()
+  const router = useRouter()
   const [open, setOpen] = useState(false)
   const [pending, setPending] = useState(false)
 
@@ -25,8 +28,14 @@ export default function OrderSummaryDialog({ children, cart, resetCart }: Props)
         })
       )
       resetCart()
+      const counter = localStorage.getItem("counter")
+      localStorage.setItem("counter", String(Number(counter) - 1))
+      window.dispatchEvent(new Event("cartChange"));
+      window.dispatchEvent(new Event("orderChange"));
+      toast.success("Order has been place")
       setOpen(false)
       setPending(false)
+      router.push(`/orders/${response.data.data.id}`)
     } catch (error) {
       setPending(false)
       console.log(error)
