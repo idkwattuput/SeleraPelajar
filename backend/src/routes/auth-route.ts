@@ -1,28 +1,11 @@
-import express, { Router } from "express";
-import { AuthController } from "../controllers/auth-controller";
+import express from "express";
+import authController from "../controllers/auth-controller";
 
-export class AuthRoute {
-  authController: AuthController;
-  router: Router;
+const router = express.Router();
 
-  constructor(authController: AuthController) {
-    this.authController = authController;
-    this.router = express.Router();
-    this.setRoute();
-  }
+router.route("/register").post(authController.register);
+router.route("/login").post(authController.login);
+router.route("/refresh").get(authController.refresh);
+router.route("/logout").get(authController.logout);
 
-  private setRoute() {
-    this.router
-      .route("/register")
-      .post(this.authController.register.bind(this.authController));
-    this.router
-      .route("/login")
-      .post(this.authController.login.bind(this.authController));
-    this.router
-      .route("/refresh")
-      .get(this.authController.refresh.bind(this.authController));
-    this.router
-      .route("/logout")
-      .get(this.authController.logout.bind(this.authController));
-  }
-}
+export default router;

@@ -1,24 +1,13 @@
-import express, { Router } from "express";
-import type { CartController } from "../controllers/cart-controller";
+import express from "express";
+import cartController from "../controllers/cart-controller";
 
-export class CartRoute {
-  cartController: CartController;
-  router: Router;
+const router = express.Router();
 
-  constructor(cartController: CartController) {
-    this.cartController = cartController;
-    this.router = express.Router();
-    this.setRoute();
-  }
+router
+  .route("/")
+  .get(cartController.getCarts)
+  .post(cartController.addToCart)
+  .put(cartController.decreaseQuantity);
+router.route("/cafes/:cafeId").get(cartController.getCart);
 
-  private setRoute() {
-    this.router
-      .route("/")
-      .get(this.cartController.getCarts.bind(this.cartController))
-      .post(this.cartController.addToCart.bind(this.cartController))
-      .put(this.cartController.decreaseQuantity.bind(this.cartController));
-    this.router
-      .route("/cafes/:cafeId")
-      .get(this.cartController.getCart.bind(this.cartController));
-  }
-}
+export default router;
