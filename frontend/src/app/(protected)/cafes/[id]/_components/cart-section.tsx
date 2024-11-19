@@ -11,9 +11,10 @@ import OrderSummaryDialog from "./order-summary-dialog"
 interface Props {
   carts: Cart
   onNewCart: (newCart: Cart) => void
+  resetCart: () => void
 }
 
-export default function CartSection({ carts, onNewCart }: Props) {
+export default function CartSection({ carts, onNewCart, resetCart }: Props) {
   const axiosPrivate = useAxiosPrivate()
   const [pending, setPending] = useState(false)
 
@@ -32,6 +33,10 @@ export default function CartSection({ carts, onNewCart }: Props) {
       )
       onNewCart(response.data.data)
       setPending(false)
+      if (response.data.data.CartItems.length === 1) {
+        localStorage.setItem("counter", "1")
+        window.dispatchEvent(new Event("cartChange"));
+      }
     } catch (error) {
       setPending(false)
       console.log(error)
@@ -51,13 +56,18 @@ export default function CartSection({ carts, onNewCart }: Props) {
       )
       onNewCart(response.data.data)
       setPending(false)
+      if (response.data.data.CartItems.length === 0) {
+        const counter = localStorage.getItem("counter")
+        localStorage.setItem("counter", String(Number(counter) - 1))
+        window.dispatchEvent(new Event("cartChange"));
+      }
     } catch (error) {
       setPending(false)
       console.log(error)
     }
   }
 
-  if (!carts || !carts.CartItems) {
+  if (!carts || !carts.CartItems || carts.CartItems.length <= 0) {
     return (
       <Card className="p-4">
         <div>No item in the cart yet.</div>
@@ -103,7 +113,7 @@ export default function CartSection({ carts, onNewCart }: Props) {
       <div>
         Total: RM <span>{Number(carts.total_price).toFixed(2)}</span>
       </div>
-      <OrderSummaryDialog cart={carts}>
+      <OrderSummaryDialog cart={carts} resetCart={resetCart}>
         <Button
           disabled={pending}
           className="w-full"

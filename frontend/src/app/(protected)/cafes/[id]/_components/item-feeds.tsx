@@ -36,6 +36,16 @@ export default function ItemFeeds({ items, handleNewCart }: Props) {
       )
       handleNewCart(response.data.data)
       setPending(false)
+      if (response.data.data.CartItems.length === 1) {
+        const counter = localStorage.getItem("counter")
+        if (counter) {
+          localStorage.setItem("counter", String(Number(counter) + 1))
+          window.dispatchEvent(new Event("cartChange"));
+        } else {
+          localStorage.setItem("counter", "1")
+          window.dispatchEvent(new Event("cartChange"));
+        }
+      }
     } catch (error) {
       setPending(false)
       console.log(error)

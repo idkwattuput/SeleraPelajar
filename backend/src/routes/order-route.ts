@@ -1,19 +1,15 @@
-import express, { Router } from "express";
-import type { OrderController } from "../controllers/order-controller";
+import express from "express";
+import orderController from "../controllers/order-controller";
 
-export class OrderRoute {
-  orderController: OrderController;
-  router: Router;
+const router = express.Router();
 
-  constructor(orderController: OrderController) {
-    this.orderController = orderController;
-    this.router = express.Router();
-    this.setRoute();
-  }
+router
+  .route("/")
+  .get(orderController.getCurrentOrders)
+  .post(orderController.createOrder);
+router
+  .route("/:id")
+  .get(orderController.getOrder)
+  .put(orderController.updateOrder);
 
-  private setRoute() {
-    this.router
-      .route("/")
-      .post(this.orderController.createOrder.bind(this.orderController));
-  }
-}
+export default router;
