@@ -1,22 +1,9 @@
-import express, { Router } from "express";
-import type { CafeController } from "../controllers/cafe-controller";
+import express from "express";
+import cafeController from "../controllers/cafe-controller";
 
-export class CafeRoute {
-  cafeController: CafeController;
-  router: Router;
+const router = express.Router();
 
-  constructor(cafeController: CafeController) {
-    this.cafeController = cafeController;
-    this.router = express.Router();
-    this.setRoute();
-  }
+router.route("/").get(cafeController.getCafes);
+router.route("/:id").get(cafeController.getCafe);
 
-  private setRoute() {
-    this.router
-      .route("/")
-      .get(this.cafeController.getCafes.bind(this.cafeController));
-    this.router
-      .route("/:id")
-      .get(this.cafeController.getCafe.bind(this.cafeController));
-  }
-}
+export default router;

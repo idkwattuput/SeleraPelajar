@@ -1,6 +1,6 @@
 "use client";
 
-import SkeletonWrapper from "@/components/skeleton-wrapper";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -11,6 +11,7 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import useAxiosPrivate from "@/hooks/use-axios-private";
 import axios from "@/lib/axios";
+import { Cart } from "@/types/cart";
 import {
   ShoppingBasket,
   CircleUser,
@@ -22,13 +23,13 @@ import { useEffect, useState } from "react";
 
 const items = [
   { label: "Home", href: "/home" },
-  { label: "Recent Order", href: "/recent-order" },
+  { label: "Recent Order", href: "/orders" },
   { label: "History Order", href: "/history-order" },
 ];
 
 const mobileItems = [
   { label: "Home", href: "/home" },
-  { label: "Recent Order", href: "/recent-order" },
+  { label: "Recent Order", href: "/orders" },
   { label: "History Order", href: "/history-order" },
   { label: "Profile", href: "/profile" },
 ];
@@ -44,13 +45,18 @@ export default function Navbar() {
 
 function DesktopNavbar() {
   const router = useRouter()
-  const [counter, setCounter] = useState(localStorage.getItem("counter"))
+  const axiosPrivate = useAxiosPrivate()
+  const [cartCounter, setCartCounter] = useState(0)
+  const [orderCounter, setOrderCounter] = useState(0)
 
 
   useEffect(() => {
     async function getCarts() {
       try {
-        setCounter(localStorage.getItem("counter"))
+        const response = await axiosPrivate.get("/api/v1/carts")
+        setCartCounter(response.data.data.reduce((count: number, cart: Cart) => {
+          return cart.CartItems.length > 0 ? count + 1 : count;
+        }, 0))
       } catch (error) {
         console.log(error)
       }
@@ -66,6 +72,29 @@ function DesktopNavbar() {
 
     return () => {
       window.removeEventListener("cartChange", handleCartChange);
+    };
+  }, [])
+
+  useEffect(() => {
+    async function getCurrentOrders() {
+      try {
+        const response = await axiosPrivate.get("/api/v1/orders")
+        setOrderCounter(response.data.data.length)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    getCurrentOrders()
+
+    const handleOrderChange = () => {
+      getCurrentOrders();
+    };
+
+    window.addEventListener("orderChange", handleOrderChange);
+
+    return () => {
+      window.removeEventListener("orderChange", handleOrderChange);
     };
   }, [])
 
@@ -91,11 +120,11 @@ function DesktopNavbar() {
         >
           <Button variant="ghost" className="font-bold">
             <ShoppingBasket className="w-4 h-4" />
-            {Number(counter) > 0 && counter}
+            {Number(cartCounter) > 0 && cartCounter}
           </Button>
         </Link>
         {items.map((item) => (
-          <NavbarItem key={item.label} lable={item.label} link={item.href} />
+          <NavbarItem key={item.label} lable={item.label} link={item.href} counter={orderCounter} />
         ))}
         <div className="flex gap-2">
           <li>
@@ -130,13 +159,17 @@ function DesktopNavbar() {
 function MobileNavbar() {
   const router = useRouter()
   const [open, setOpen] = useState(false)
-  const [counter, setCounter] = useState(localStorage.getItem("counter"))
+  const axiosPrivate = useAxiosPrivate()
+  const [counter, setCounter] = useState(0)
 
 
   useEffect(() => {
     async function getCarts() {
       try {
-        setCounter(localStorage.getItem("counter"))
+        const response = await axiosPrivate.get("/api/v1/carts")
+        setCounter(response.data.data.reduce((count: number, cart: Cart) => {
+          return cart.CartItems.length > 0 ? count + 1 : count;
+        }, 0))
       } catch (error) {
         console.log(error)
       }
@@ -220,10 +253,9 @@ function MobileNavbar() {
   )
 }
 
-function NavbarItem({ lable, link, clickCallback }: { lable: string; link: string, clickCallback?: () => void }) {
+function NavbarItem({ lable, link, counter, clickCallback }: { lable: string; link: string, counter: number, clickCallback?: () => void }) {
   const currentPath = usePathname();
   const isActive = currentPath === link;
-
 
   return (
     <Link href={link}
@@ -237,7 +269,14 @@ function NavbarItem({ lable, link, clickCallback }: { lable: string; link: strin
           {lable}
         </Button>
       ) : (
-        <Button variant="ghost" className="w-full">{lable}</Button>
+        <Button variant="ghost" className="w-full">
+          {lable}
+          {lable === "Recent Order" && (
+            counter > 0 && (
+              <Badge>{counter}</Badge>
+            )
+          )}
+        </Button>
       )}
     </Link>
   );

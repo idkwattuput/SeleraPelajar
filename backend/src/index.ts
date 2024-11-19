@@ -1,35 +1,65 @@
-import { App } from "./app";
-import { prisma } from "./database/db";
-import { UserRepository } from "./repositories/user-repository";
-import { AuthController } from "./controllers/auth-controller";
-import { AuthRoute } from "./routes/auth-route";
-import { CafeRepository } from "./repositories/cafe-repository";
-import { CafeController } from "./controllers/cafe-controller";
-import { CafeRoute } from "./routes/cafe-route";
-import { CartRepository } from "./repositories/cart-repository";
-import { CartController } from "./controllers/cart-controller";
-import { CartRoute } from "./routes/cart-route";
-import { OrderRepository } from "./repositories/order-repository";
-import { OrderController } from "./controllers/order-controller";
-import { OrderRoute } from "./routes/order-route";
+import express from "express";
+import { Server as SocketIOServer } from "socket.io";
+import path from "path";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import { logger } from "./middlewares/log";
+import { verifyJWT } from "./middlewares/jwt";
+import { credentials } from "./middlewares/credentials";
+import { corsOptions } from "./config/cors-options";
+import { errorHandler } from "./middlewares/error";
+import authRoute from "./routes/auth-route";
+import cafeRoute from "./routes/cafe-route";
+import cartRoute from "./routes/cart-route";
+import orderRoute from "./routes/order-route";
 
+const app = express();
 const PORT = Bun.env.PORT!;
 
-const userRepository = new UserRepository(prisma);
-const cafeRepository = new CafeRepository(prisma);
-const cartRepository = new CartRepository(prisma);
-const orderRepository = new OrderRepository(prisma);
+// Middlewares
+app.use(logger);
+app.use(credentials);
+app.use(cors(corsOptions));
+app.use(express.json());
+app.use(cookieParser());
 
-const authController = new AuthController(userRepository);
-const cafeController = new CafeController(cafeRepository);
-const cartController = new CartController(cartRepository);
-const orderController = new OrderController(orderRepository);
+// Routes that don't need JWT verification
+app.use("/api/v1/auth", authRoute);
 
-const authRoute = new AuthRoute(authController);
-const cafeRoute = new CafeRoute(cafeController);
-const cartRoute = new CartRoute(cartController);
-const orderRoute = new OrderRoute(orderController);
+// JWT middleware for routes that need verification
+app.use(verifyJWT);
 
-const app = new App(authRoute, cafeRoute, cartRoute, orderRoute);
+// Route requiring JWT
+app.use("/api/v1/cafes", cafeRoute);
+app.use("/api/v1/carts", cartRoute);
+app.use("/api/v1/orders", orderRoute);
 
-app.start(PORT);
+// Handle 404 for non-existent routes
+app.use((_, res) => {
+  res.status(404).json({ message: "Route not found" });
+});
+
+// Server static file
+app.use("/", express.static(path.join(__dirname, "../public")));
+
+app.use(errorHandler);
+
+// Start the server
+const expressServer = app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+
+export const io = new SocketIOServer(expressServer, {
+  cors: {
+    origin: "*",
+  },
+});
+
+// Socket.IO Connection
+io.on("connection", (socket) => {
+  console.log("New client connected");
+
+  socket.on("disconnect", () => {
+    console.log("Client disconnected");
+  });
+});

@@ -1,29 +1,26 @@
-import type { PrismaClient } from "@prisma/client";
+import { prisma } from "../database/db";
 
-export class CafeRepository {
-  prisma: PrismaClient;
-
-  constructor(prisma: PrismaClient) {
-    this.prisma = prisma;
-  }
-
-  async findAll() {
-    return this.prisma.cafes.findMany({
-      orderBy: { is_open: "desc" },
-    });
-  }
-
-  async find(id: string) {
-    return this.prisma.cafes.findUnique({
-      where: { id: id },
-      include: {
-        Items: {
-          include: {
-            category: true,
-          },
-          orderBy: [{ is_available: "desc" }, { category: { name: "asc" } }],
-        },
-      },
-    });
-  }
+async function findAll() {
+  return prisma.cafes.findMany({
+    orderBy: { is_open: "desc" },
+  });
 }
+
+async function find(id: string) {
+  return prisma.cafes.findUnique({
+    where: { id: id },
+    include: {
+      Items: {
+        include: {
+          category: true,
+        },
+        orderBy: [{ is_available: "desc" }, { category: { name: "asc" } }],
+      },
+    },
+  });
+}
+
+export default {
+  findAll,
+  find,
+};
