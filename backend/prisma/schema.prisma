@@ -41,19 +41,21 @@ model Users {
 
 model Cafes {
   id          String   @id @default(uuid())
-  name        String
-  description String
-  image       String
+  name        String   @unique
+  description String?
+  image       String?
   block       String
   lot         String
-  is_open     Boolean
-  seller_id   String
+  is_open     Boolean  @default(false)
+  seller_id   String   @unique
   seller      Users    @relation(fields: [seller_id], references: [id])
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
   Items       Items[]
   Orders      Orders[]
   Carts       Carts[]
+
+  @@unique([block, lot])
 }
 
 model Category {

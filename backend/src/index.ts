@@ -23,6 +23,9 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
+// Server static file
+app.use("/", express.static(path.join(__dirname, "../public")));
+
 // Routes that don't need JWT verification
 app.use("/api/v1/auth", authRoute);
 
@@ -38,9 +41,6 @@ app.use("/api/v1/orders", orderRoute);
 app.use((_, res) => {
   res.status(404).json({ message: "Route not found" });
 });
-
-// Server static file
-app.use("/", express.static(path.join(__dirname, "../public")));
 
 app.use(errorHandler);
 

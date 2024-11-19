@@ -7,6 +7,7 @@ export const errorHandler = (
   next: NextFunction,
 ) => {
   // const statusCode = res.statusCode !== 200 ? res.statusCode : 500; // Use existing status code if it's not 200, otherwise default to 500
+  console.error("Error: ", err.message);
 
   res.status(500).json({
     message: err.message, // Send the error message
