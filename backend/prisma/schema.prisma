@@ -40,20 +40,21 @@ model Users {
 }
 
 model Cafes {
-  id          String   @id @default(uuid())
-  name        String   @unique
+  id          String     @id @default(uuid())
+  name        String     @unique
   description String?
   image       String?
   block       String
   lot         String
-  is_open     Boolean  @default(false)
-  seller_id   String   @unique
-  seller      Users    @relation(fields: [seller_id], references: [id])
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
+  is_open     Boolean    @default(false)
+  seller_id   String     @unique
+  seller      Users      @relation(fields: [seller_id], references: [id])
+  created_at  DateTime   @default(now())
+  updated_at  DateTime   @updatedAt
   Items       Items[]
   Orders      Orders[]
   Carts       Carts[]
+  Category    Category[]
 
   @@unique([block, lot])
 }
@@ -61,9 +62,13 @@ model Cafes {
 model Category {
   id         String   @id @default(uuid())
   name       String
+  cafe_id    String
+  cafe       Cafes    @relation(fields: [cafe_id], references: [id])
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   Items      Items[]
+
+  @@unique([name, cafe_id])
 }
 
 model Items {
@@ -71,8 +76,8 @@ model Items {
   name         String
   description  String
   price        Decimal      @db.Decimal(10, 2)
-  image        String
-  is_available Boolean
+  image        String?
+  is_available Boolean      @default(false)
   cafe_id      String
   cafe         Cafes        @relation(fields: [cafe_id], references: [id])
   category_id  String

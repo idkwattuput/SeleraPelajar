@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import cafeRepository from "../repositories/cafe-repository";
+import itemRepository from "../repositories/item-repository";
 
 async function getCafes(req: Request, res: Response, next: NextFunction) {
   try {
@@ -18,6 +19,20 @@ async function getCafe(req: Request, res: Response, next: NextFunction) {
       return res.status(404).json({ message: "Cafe not found" });
     }
     return res.json({ data: cafe });
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function getItemsByCafeId(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const userId = (req as any).user.id;
+    const items = await itemRepository.findBySellerId(userId);
+    return res.json({ data: items });
   } catch (error) {
     next(error);
   }
@@ -54,5 +69,6 @@ async function createCafe(req: Request, res: Response, next: NextFunction) {
 export default {
   getCafes,
   getCafe,
+  getItemsByCafeId,
   createCafe,
 };

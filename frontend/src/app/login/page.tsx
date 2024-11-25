@@ -16,7 +16,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
-import { CircleDollarSign } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import axios from "@/lib/axios";

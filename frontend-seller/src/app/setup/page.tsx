@@ -72,6 +72,7 @@ export default function Setup() {
     maxFiles: 1,
     maxSize: 1024 * 1024 * 4,
   };
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -100,7 +101,7 @@ export default function Setup() {
         }
       )
       toast.success("Welcome to Selera Pelajar 🎉")
-      router.push("/home")
+      router.push("/dashboard")
     } catch (error) {
       if (!error?.response) {
         toast.error("Server not respond")
@@ -195,7 +196,7 @@ export default function Setup() {
                         className="relative bg-background rounded-lg p-2"
                       >
                         <FileInput
-                          id="cafeImage"
+                          idName="cafeImage"
                           className="outline-dashed outline-1 outline-slate-500"
                         >
                           <div className="flex items-center justify-center flex-col p-8 w-full ">

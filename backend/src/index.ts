@@ -12,6 +12,8 @@ import authRoute from "./routes/auth-route";
 import cafeRoute from "./routes/cafe-route";
 import cartRoute from "./routes/cart-route";
 import orderRoute from "./routes/order-route";
+import categoryRoute from "./routes/category-route";
+import itemRoute from "./routes/item-route";
 
 const app = express();
 const PORT = Bun.env.PORT!;
@@ -36,6 +38,8 @@ app.use(verifyJWT);
 app.use("/api/v1/cafes", cafeRoute);
 app.use("/api/v1/carts", cartRoute);
 app.use("/api/v1/orders", orderRoute);
+app.use("/api/v1/category", categoryRoute);
+app.use("/api/v1/items", itemRoute);
 
 // Handle 404 for non-existent routes
 app.use((_, res) => {

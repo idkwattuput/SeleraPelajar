@@ -1,13 +1,13 @@
 import express from "express";
 import multer from "multer";
 import path from "path";
-import cafeController from "../controllers/cafe-controller";
+import itemController from "../controllers/item-controller";
 
 const router = express.Router();
 
 const storage = multer.diskStorage({
   destination: (_, __, cb) => {
-    cb(null, "public/cafes");
+    cb(null, "public/items");
   },
   filename: (_, file, cb) => {
     cb(
@@ -18,11 +18,6 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-router
-  .route("/")
-  .get(cafeController.getCafes)
-  .post(upload.single("cafeImage"), cafeController.createCafe);
-router.route("/items").get(cafeController.getItemsByCafeId);
-router.route("/:id").get(cafeController.getCafe);
+router.route("/").post(upload.single("itemImage"), itemController.createItem);
 
 export default router;

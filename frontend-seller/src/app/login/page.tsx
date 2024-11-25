@@ -54,7 +54,7 @@ export default function Login() {
       const accessToken = response?.data?.accessToken
       setAccessToken(accessToken)
       toast.success("Sign In success 🎉")
-      router.push("/home")
+      router.push("/dashboard")
     } catch (error) {
       if (!error?.response) {
         toast.error("Server not respond")
