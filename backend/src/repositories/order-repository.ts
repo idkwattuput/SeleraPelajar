@@ -17,6 +17,22 @@ async function findAllCurrentOrder(customerId: string) {
   });
 }
 
+async function findAllHistoryOrder(customerId: string) {
+  return prisma.orders.findMany({
+    where: {
+      customer_id: customerId,
+      status: { in: ["COMPLETED", "CANCELLED"] },
+    },
+    include: {
+      cafe: true,
+      OrderItems: true,
+    },
+    orderBy: {
+      created_at: "asc",
+    },
+  });
+}
+
 async function find(id: string) {
   return prisma.orders.findUnique({
     where: { id: id },
@@ -151,6 +167,7 @@ async function update(id: string, status: OrderStatus) {
 
 export default {
   findAllCurrentOrder,
+  findAllHistoryOrder,
   find,
   countByDate,
   revenueSum,

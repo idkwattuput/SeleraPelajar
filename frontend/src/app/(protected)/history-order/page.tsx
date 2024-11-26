@@ -19,7 +19,7 @@ export default function HistoryOrders() {
     async function getCarts() {
       try {
         setLoading(true)
-        const response = await axiosPrivate.get("/api/v1/orders")
+        const response = await axiosPrivate.get("/api/v1/orders/history")
         setOrders(response.data.data)
         setLoading(false)
       } catch (error) {

@@ -16,6 +16,20 @@ async function getCurrentOrders(
   }
 }
 
+async function getHistoryOrders(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const userId = (req as any).user.id;
+    const historyOrders = await orderRepository.findAllHistoryOrder(userId);
+    return res.json({ data: historyOrders });
+  } catch (error) {
+    next(error);
+  }
+}
+
 async function getOrder(req: Request, res: Response, next: NextFunction) {
   try {
     const id = req.params.id;
@@ -51,6 +65,7 @@ async function updateOrder(req: Request, res: Response, next: NextFunction) {
 
 export default {
   getCurrentOrders,
+  getHistoryOrders,
   getOrder,
   createOrder,
   updateOrder,
