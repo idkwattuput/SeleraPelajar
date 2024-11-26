@@ -31,6 +31,53 @@ async function find(id: string) {
   });
 }
 
+async function countByDate(cafeId: string, minDate: Date, maxDate: Date) {
+  return await prisma.orders.count({
+    where: {
+      cafe_id: cafeId,
+      created_at: { gte: minDate, lte: maxDate },
+      status: "COMPLETED",
+    },
+  });
+}
+
+async function revenueSum(cafeId: string, today: Date) {
+  const result = await prisma.orders.aggregate({
+    _sum: {
+      total_price: true,
+    },
+    where: {
+      cafe_id: cafeId,
+      created_at: {
+        gte: today,
+      },
+      status: "COMPLETED",
+    },
+  });
+  return result._sum.total_price || 0;
+}
+
+async function findPopularItem(cafeId: string) {
+  const result = await prisma.orderItems.groupBy({
+    by: ["item_id"],
+    where: { order: { cafe_id: cafeId } },
+    _sum: { quantity: true },
+    orderBy: {
+      _sum: {
+        quantity: "desc",
+      },
+    },
+    take: 1,
+  });
+
+  if (result.length > 0) {
+    return prisma.items.findUnique({
+      where: { id: result[0].item_id },
+    });
+  }
+  return null;
+}
+
 async function save(cafeId: string, customerId: string) {
   return prisma.$transaction(async (p) => {
     const findCart = await p.carts.findUnique({
@@ -105,6 +152,9 @@ async function update(id: string, status: OrderStatus) {
 export default {
   findAllCurrentOrder,
   find,
+  countByDate,
+  revenueSum,
+  findPopularItem,
   save,
   update,
 };

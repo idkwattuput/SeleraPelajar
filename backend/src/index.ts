@@ -14,6 +14,7 @@ import cartRoute from "./routes/cart-route";
 import orderRoute from "./routes/order-route";
 import categoryRoute from "./routes/category-route";
 import itemRoute from "./routes/item-route";
+import summaryRoute from "./routes/summary-route";
 
 const app = express();
 const PORT = Bun.env.PORT!;
@@ -40,6 +41,7 @@ app.use("/api/v1/carts", cartRoute);
 app.use("/api/v1/orders", orderRoute);
 app.use("/api/v1/category", categoryRoute);
 app.use("/api/v1/items", itemRoute);
+app.use("/api/v1/summary", summaryRoute);
 
 // Handle 404 for non-existent routes
 app.use((_, res) => {

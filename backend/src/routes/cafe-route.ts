@@ -21,8 +21,13 @@ const upload = multer({ storage: storage });
 router
   .route("/")
   .get(cafeController.getCafes)
-  .post(upload.single("cafeImage"), cafeController.createCafe);
+  .post(upload.single("cafeImage"), cafeController.createCafe)
+  .put(cafeController.updateCafe);
+router
+  .route("/image")
+  .put(upload.single("cafeImage"), cafeController.updateCafeImage);
 router.route("/items").get(cafeController.getItemsByCafeId);
+router.route("/seller").get(cafeController.getCafeBySellerId);
 router.route("/:id").get(cafeController.getCafe);
 
 export default router;

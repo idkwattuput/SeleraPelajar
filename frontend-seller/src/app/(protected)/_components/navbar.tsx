@@ -8,22 +8,19 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import useAxiosPrivate from "@/hooks/use-axios-private";
 import axios from "@/lib/axios";
-import { Cart } from "@/types/cart";
 import {
-  ShoppingBasket,
   CircleUser,
   Menu,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const items = [
   { label: "Dashboard", href: "/dashboard" },
   { label: "Order", href: "/orders" },
-  { label: "Menu", href: "/menu" },
+  { label: "Cafe", href: "/cafe" },
 ];
 
 const mobileItems = [

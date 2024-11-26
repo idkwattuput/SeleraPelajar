@@ -71,10 +71,39 @@ async function save(
   });
 }
 
+async function update(
+  id: string,
+  name: string,
+  description: string,
+  block: string,
+  lot: string,
+) {
+  return await prisma.cafes.update({
+    where: { id: id },
+    data: {
+      name: name,
+      description: description,
+      block: block,
+      lot: lot,
+    },
+  });
+}
+
+async function updateImage(id: string, image: string) {
+  return await prisma.cafes.update({
+    where: { id: id },
+    data: {
+      image: image,
+    },
+  });
+}
+
 export default {
   findAll,
   find,
   findBySellerId,
   isValid,
   save,
+  update,
+  updateImage,
 };
