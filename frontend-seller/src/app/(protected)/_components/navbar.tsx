@@ -19,15 +19,16 @@ import { useState } from "react";
 
 const items = [
   { label: "Dashboard", href: "/dashboard" },
-  { label: "Order", href: "/orders" },
+  { label: "Current Order", href: "/orders" },
+  { label: "History Order", href: "/history-orders" },
   { label: "Cafe", href: "/cafe" },
 ];
 
 const mobileItems = [
-  { label: "Home", href: "/home" },
-  { label: "Recent Order", href: "/orders" },
-  { label: "History Order", href: "/history-order" },
-  { label: "Profile", href: "/profile" },
+  { label: "Dashboard", href: "/dashboard" },
+  { label: "Current Order", href: "/orders" },
+  { label: "History Order", href: "/history-orders" },
+  { label: "Cafe", href: "/cafe" },
 ];
 
 export default function Navbar() {

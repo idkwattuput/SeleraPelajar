@@ -8,6 +8,7 @@ router
   .get(orderController.getCurrentOrders)
   .post(orderController.createOrder);
 router.route("/history").get(orderController.getHistoryOrders);
+router.route("/seller").get(orderController.getCurrentOrdersSeller);
 router
   .route("/:id")
   .get(orderController.getOrder)

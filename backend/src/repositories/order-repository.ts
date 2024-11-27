@@ -17,6 +17,27 @@ async function findAllCurrentOrder(customerId: string) {
   });
 }
 
+async function findAllCurrentOrderSeller(cafeId: string) {
+  return prisma.orders.findMany({
+    where: {
+      cafe_id: cafeId,
+      status: { notIn: ["COMPLETED", "CANCELLED"] },
+    },
+    include: {
+      customer: {
+        select: {
+          first_name: true,
+          last_name: true,
+        },
+      },
+      OrderItems: true,
+    },
+    orderBy: {
+      status: "asc",
+    },
+  });
+}
+
 async function findAllHistoryOrder(customerId: string) {
   return prisma.orders.findMany({
     where: {
@@ -127,6 +148,12 @@ async function save(cafeId: string, customerId: string) {
         },
       },
       include: {
+        customer: {
+          select: {
+            first_name: true,
+            last_name: true,
+          },
+        },
         OrderItems: {
           include: {
             item: true,
@@ -156,6 +183,12 @@ async function update(id: string, status: OrderStatus) {
     },
     include: {
       cafe: true,
+      customer: {
+        select: {
+          first_name: true,
+          last_name: true,
+        },
+      },
       OrderItems: {
         include: {
           item: true,
@@ -167,6 +200,7 @@ async function update(id: string, status: OrderStatus) {
 
 export default {
   findAllCurrentOrder,
+  findAllCurrentOrderSeller,
   findAllHistoryOrder,
   find,
   countByDate,
