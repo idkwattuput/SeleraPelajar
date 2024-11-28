@@ -1,6 +1,7 @@
 "use client"
 
 import SkeletonWrapper from "@/components/skeleton-wrapper"
+import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import useAxiosPrivate from "@/hooks/use-axios-private"
 import { Cafe } from "@/types/cafe"
@@ -31,16 +32,24 @@ export default function CafeFeeds() {
   }, [])
 
   if (loading) {
+    const card = [1, 2, 3, 4]
+
     return (
-      <SkeletonWrapper isLoading={loading}>
-        <Card>
-          <CardHeader>
-            <CardTitle>loading</CardTitle>
-            <CardDescription>loading</CardDescription>
-          </CardHeader>
-          <CardContent>loding</CardContent>
-        </Card>
-      </SkeletonWrapper>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {
+          card.map((c: number) => (
+            <SkeletonWrapper key={c} isLoading={loading}>
+              <Card>
+                <CardHeader>
+                  <CardTitle>loading</CardTitle>
+                  <CardDescription>loading</CardDescription>
+                </CardHeader>
+                <CardContent>loding</CardContent>
+              </Card>
+            </SkeletonWrapper>
+          ))
+        }
+      </div>
     )
   }
 
@@ -49,7 +58,7 @@ export default function CafeFeeds() {
       {cafes.length <= 0 ? (
         <div>There is no cafe yet</div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {cafes.map((cafe) => (
             <Link key={cafe.id} href={`/cafes/${cafe.id}`}>
               {cafe.is_open ? (
@@ -80,7 +89,10 @@ export default function CafeFeeds() {
                     />
                   </div>
                   <hr className="my-4" />
-                  <CardTitle>{cafe.name}</CardTitle>
+                  <CardTitle className="flex justify-between items-center">
+                    {cafe.name}
+                    <Badge variant={"destructive"}>Close</Badge>
+                  </CardTitle>
                   <CardDescription>{cafe.description}</CardDescription>
                   <CardDescription className="flex items-center mt-4">
                     <MapPin className="h-4 w-4" />{cafe.block}-{cafe.lot}
