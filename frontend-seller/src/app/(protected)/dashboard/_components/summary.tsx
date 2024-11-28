@@ -34,7 +34,7 @@ export default function Summary({ summary, isLoading }: Props) {
       <Card>
         <CardHeader>
           <CardDescription className="text-primary">Revenue Today</CardDescription>
-          <CardTitle>{summary.revenue_today}</CardTitle>
+          <CardTitle>RM {Number(summary.revenue_today).toFixed(2)}</CardTitle>
         </CardHeader>
       </Card>
       <Card>
