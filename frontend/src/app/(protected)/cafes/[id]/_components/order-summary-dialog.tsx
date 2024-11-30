@@ -65,22 +65,21 @@ export default function OrderSummaryDialog({ children, cart, resetCart }: Props)
               className="flex py-4 justify-between items-center"
             >
               <div>
-                <p>
-                  x{cartItem.quantity}
-                  <span className="ml-2 capitalize">
-                    {cartItem.item.name}
-                  </span>
-                </p>
+                <div className="font-bold flex items-center gap-2">
+                  <p>x{cartItem.quantity}</p>
+                  <p className="capitalize">{cartItem.item.name}</p>
+                </div>
                 <p className="text-muted-foreground text-sm">{cartItem.note}</p>
               </div>
-              <p className="font-semibold">RM {Number(cartItem.quantity * Number(cartItem.item.price)).toFixed(2)}</p>
+              <p className="">RM {Number(cartItem.quantity * Number(cartItem.item.price)).toFixed(2)}</p>
             </div>
           ))}
-          <h1 className="text-2xl font-bold">
-            Total: RM <span>{Number(cart?.total_price).toFixed(2)}</span>
-          </h1>
+          <div className="text-xl lg:text-2xl font-bold w-full border-y border-primary py-2 flex justify-between items-end">
+            <p>Total:</p>
+            <p>RM {Number(cart?.total_price).toFixed(2)}</p>
+          </div>
         </div>
-        <DialogFooter>
+        <DialogFooter className="gap-4">
           <DialogClose asChild>
             <Button
               variant={"secondary"}

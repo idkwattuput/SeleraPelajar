@@ -55,24 +55,27 @@ export default function AddItemDialog({ children, item, onNewCart }: Props) {
       </DialogTrigger>
       <DialogContent className="p-2">
         <DialogHeader>
-          <Image
-            src={`${BACKEND_URL}/items/${item.image}`}
-            alt="item"
-            width={650}
-            height={650}
-            className="rounded-xl"
-          />
+          {item.image && (
+            <Image
+              src={`${BACKEND_URL}/items/${item.image}`}
+              alt="item"
+              width={650}
+              height={650}
+              className="rounded-xl"
+            />
+          )}
         </DialogHeader>
-        <div className="space-y-4 divide-y">
+        <div className="">
           <div>
             <DialogTitle className="capitalize text-2xl">{item.name}</DialogTitle>
             <DialogDescription>{item.description}</DialogDescription>
-            <p className="font-bold">RM {item.price}</p>
+            <p className="">RM {Number(item.price).toFixed(2)}</p>
           </div>
-          <div>
-            <h1 className="text-2xl font-bold">Note</h1>
-            <p className="text-muted-foreground">
-              This is kinda special request to restaurant.
+          <hr className="my-2 text-muted-foreground" />
+          <div className="">
+            <h1 className="text-2xl font-bold">Special Intructions</h1>
+            <p className="mb-2 text-sm">
+              Add any special intructions or requests for the restaurant (optional).
             </p>
             <Textarea
               placeholder="e.g. Tak nak sayur"
@@ -80,7 +83,7 @@ export default function AddItemDialog({ children, item, onNewCart }: Props) {
             />
           </div>
         </div>
-        <DialogFooter className="border-t pt-2">
+        <DialogFooter className="flex flex-row border-t pt-2">
           <div className="flex justify-start items-center ">
             {quantity === 1 ? (
               <Button disabled variant={"ghost"} size={"icon"}>

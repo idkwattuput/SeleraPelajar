@@ -34,15 +34,17 @@ export default function SearchItems({ items, onSearch, onCategoryClick }: Props)
       >
         All
       </Button>
-      {removeDupplicateCategories.map((category) => (
-        <Button
-          key={category}
-          variant={selectedCategory === category ? "secondary" : "ghost"}
-          onClick={() => handleCategoryClick(category)}
-        >
-          {category}
-        </Button>
-      ))}
+      <div className="flex gap-2 overflow-x-auto whitespace-nowrap scroll-smooth hide-scrollbar">
+        {removeDupplicateCategories.map((category) => (
+          <Button
+            key={category}
+            variant={selectedCategory === category ? "secondary" : "ghost"}
+            onClick={() => handleCategoryClick(category)}
+          >
+            {category}
+          </Button>
+        ))}
+      </div>
     </div>
   )
 }
