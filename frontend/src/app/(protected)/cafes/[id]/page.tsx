@@ -11,6 +11,7 @@ import SearchItems from "./_components/search-item";
 import CartSection from "./_components/cart-section";
 import { Cart } from "@/types/cart";
 import { Item } from "@/types/item";
+import CartSectionMobile from "./_components/cart-section-mobile";
 
 export default function Cafe() {
   const axiosPrivate = useAxiosPrivate()
@@ -59,6 +60,10 @@ export default function Cafe() {
     setCarts(null)
   }
 
+  function handleCategoryClick(category: string) {
+    setFilteredItems(items.filter((item) => item.category.name === category))
+  }
+
   return (
     <div className="p-4">
       {notFound ? (
@@ -70,21 +75,26 @@ export default function Cafe() {
           </SkeletonWrapper>
           <hr className="my-4" />
           <SkeletonWrapper isLoading={loading}>
-            <SearchItems items={items} onSearch={handleSearchItem} />
+            <SearchItems items={items} onSearch={handleSearchItem} onCategoryClick={handleCategoryClick} />
           </SkeletonWrapper>
           <hr className="my-4" />
           <div className="w-full flex gap-4">
-            <div className="w-3/4">
+            <div className="w-full lg:w-3/4">
               <SkeletonWrapper isLoading={loading}>
                 <ItemFeeds items={filteredItems} handleNewCart={onCartChange} />
               </SkeletonWrapper>
             </div>
-            <div className="w-1/4">
+            <div className="hidden lg:block lg:w-1/4">
               <SkeletonWrapper isLoading={loading}>
                 <CartSection carts={carts} onNewCart={onCartChange} resetCart={handleResetCart} />
               </SkeletonWrapper>
             </div>
           </div>
+          {carts?.CartItems.length > 0 && (
+            <div className="mt-4 block sticky bottom-0 z-10 lg:hidden">
+              <CartSectionMobile carts={carts} onNewCart={onCartChange} resetCart={handleResetCart} />
+            </div>
+          )}
         </>
       )}
     </div>

@@ -53,7 +53,7 @@ export default function ItemFeeds({ items, handleNewCart }: Props) {
   }
 
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
       {items.map((item) => (
         item.is_available ? (
           <AddItemDialog
@@ -62,7 +62,7 @@ export default function ItemFeeds({ items, handleNewCart }: Props) {
             onNewCart={handleNewCart}
           >
             <Card
-              className="p-4 flex justify-between items-start transition ease-in-out hover:-translate-y-1 hover:scale-105 hover:cursor-pointer"
+              className="p-4 h-[146.5px] flex justify-between items-start transition ease-in-out hover:-translate-y-1 hover:scale-105 hover:cursor-pointer"
             >
               <div>
                 <CardTitle className="capitalize flex items-center gap-4">
@@ -72,26 +72,42 @@ export default function ItemFeeds({ items, handleNewCart }: Props) {
                 <p>RM {Number(item.price).toFixed(2)}</p>
                 <CardDescription>{item.description}</CardDescription>
               </div>
-              <div className="relative">
-                <Image
-                  src={`${BACKEND_URL}/items/${item.image}`}
-                  alt="item image"
-                  width={150}
-                  height={100}
-                  className=" rounded-lg"
-                />
-                <Button
-                  variant={"secondary"}
-                  disabled={pending}
-                  size={"icon"}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleAddToCart(item)
-                  }}
-                  className="rounded-full absolute bottom-0 right-0">
-                  <Plus />
-                </Button>
-              </div>
+              {item.image ? (
+                <div className="relative">
+                  <Image
+                    src={`${BACKEND_URL}/items/${item.image}`}
+                    alt="item image"
+                    width={150}
+                    height={100}
+                    className=" rounded-lg"
+                  />
+                  <Button
+                    variant={"secondary"}
+                    disabled={pending}
+                    size={"icon"}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleAddToCart(item)
+                    }}
+                    className="rounded-full absolute bottom-0 right-0">
+                    <Plus />
+                  </Button>
+                </div>
+              ) : (
+                <div className="h-full flex justify-end items-end">
+                  <Button
+                    variant={"secondary"}
+                    disabled={pending}
+                    size={"icon"}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleAddToCart(item)
+                    }}
+                    className="rounded-full">
+                    <Plus />
+                  </Button>
+                </div>
+              )}
             </Card>
           </AddItemDialog>
         ) : (

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import useAxiosPrivate from "@/hooks/use-axios-private"
 import { Cart, CartItem } from "@/types/cart"
-import { Minus, Plus, Trash } from "lucide-react"
+import { Minus, Plus, ShoppingBasket, Trash } from "lucide-react"
 import { useState } from "react"
 import OrderSummaryDialog from "./order-summary-dialog"
 
@@ -69,15 +69,16 @@ export default function CartSection({ carts, onNewCart, resetCart }: Props) {
 
   if (!carts || !carts.CartItems || carts.CartItems.length <= 0) {
     return (
-      <Card className="p-4">
-        <div>No item in the cart yet.</div>
+      <Card className="p-4 flex flex-col justify-center items-center">
+        <ShoppingBasket className="text-muted-foreground w-10 h-10" />
+        <p className="text-muted-foreground">No Item Yet</p>
       </Card>
     )
   }
 
   return (
     <Card className="p-4">
-      <h2 className="text-3xl font-bold">Your Items</h2>
+      <h2 className="text-2xl font-bold">Your Items</h2>
       <div className="divide-y">
         {carts?.CartItems?.map((cartItem) => (
           <div key={`${cartItem.cafe_id}_${cartItem.customer_id}_${cartItem.item_id}_${cartItem.is_note}`} className="flex py-4 justify-between items-center">
@@ -110,7 +111,7 @@ export default function CartSection({ carts, onNewCart, resetCart }: Props) {
           </div>
         ))}
       </div>
-      <div>
+      <div className="border-t border-primary py-2 font-bold text-2xl">
         Total: RM <span>{Number(carts.total_price).toFixed(2)}</span>
       </div>
       <OrderSummaryDialog cart={carts} resetCart={resetCart}>
