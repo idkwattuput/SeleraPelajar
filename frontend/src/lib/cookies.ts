@@ -20,3 +20,14 @@ export async function getRefreshToken() {
   const cookieStore = await cookies();
   return cookieStore.get("SPRT")?.value;
 }
+
+export async function isUserAuthenticated() {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get("SPAT")?.value;
+  const refreshToken = cookieStore.get("refresh_token")?.value;
+  if (!accessToken || !refreshToken) {
+    return false
+  }
+  return true
+}
+

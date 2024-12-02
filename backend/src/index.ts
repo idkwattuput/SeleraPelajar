@@ -15,6 +15,7 @@ import orderRoute from "./routes/order-route";
 import categoryRoute from "./routes/category-route";
 import itemRoute from "./routes/item-route";
 import summaryRoute from "./routes/summary-route";
+import userRoute from "./routes/user-route";
 
 const app = express();
 const PORT = Bun.env.PORT!;
@@ -31,17 +32,18 @@ app.use("/", express.static(path.join(__dirname, "../public")));
 
 // Routes that don't need JWT verification
 app.use("/api/v1/auth", authRoute);
+app.use("/api/v1/cafes", cafeRoute);
 
 // JWT middleware for routes that need verification
 app.use(verifyJWT);
 
 // Route requiring JWT
-app.use("/api/v1/cafes", cafeRoute);
 app.use("/api/v1/carts", cartRoute);
 app.use("/api/v1/orders", orderRoute);
 app.use("/api/v1/category", categoryRoute);
 app.use("/api/v1/items", itemRoute);
 app.use("/api/v1/summary", summaryRoute);
+app.use("/api/v1/users", userRoute);
 
 // Handle 404 for non-existent routes
 app.use((_, res) => {

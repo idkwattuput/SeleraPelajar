@@ -28,10 +28,22 @@ export default function Cafe() {
       try {
         setLoading(true)
         const response = await axiosPrivate.get(`/api/v1/cafes/${id}`)
-        const anotherResponse = await axiosPrivate.get(`/api/v1/carts/cafes/${id}`)
         setCafes(response.data.data || {})
         setItems(response.data.data.Items)
         setFilteredItems(response.data.data.Items)
+        setLoading(false)
+      } catch (error) {
+        setLoading(false)
+        console.log(error)
+        if (error.response?.status === 404) {
+          setNotFound(true)
+        }
+      }
+    }
+    async function getCarts(id: string) {
+      try {
+        setLoading(true)
+        const anotherResponse = await axiosPrivate.get(`/api/v1/carts/cafes/${id}`)
         setCarts(anotherResponse.data.data || {})
         setLoading(false)
       } catch (error) {
@@ -43,6 +55,7 @@ export default function Cafe() {
       }
     }
     getCafe(params.id)
+    getCarts(params.id)
   }, [params.id])
 
   function onCartChange(newCart: Cart) {

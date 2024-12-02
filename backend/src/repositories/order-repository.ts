@@ -57,7 +57,7 @@ async function findAllHistoryOrder(customerId: string) {
       },
     },
     orderBy: {
-      created_at: "asc",
+      created_at: "desc",
     },
   });
 }

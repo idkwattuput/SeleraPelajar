@@ -70,7 +70,7 @@ export default function OrderHistoryFeed({ isLoading, orders }: Props) {
                         </Badge>
                       )}
                     </CardTitle>
-                    <CardDescription>#{order.id}</CardDescription>
+                    <CardDescription className="flex justify-start">#{order.id}</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="flex justify-between items-center">

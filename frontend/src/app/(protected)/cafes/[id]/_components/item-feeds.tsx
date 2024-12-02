@@ -10,6 +10,8 @@ import { Cart, CartItem } from "@/types/cart"
 import useAxiosPrivate from "@/hooks/use-axios-private"
 import { useState } from "react"
 import { Badge } from "@/components/ui/badge"
+import { isUserAuthenticated } from "@/lib/cookies"
+import { useRouter } from "next/navigation"
 
 interface Props {
   items: Item[]
@@ -19,10 +21,15 @@ interface Props {
 export default function ItemFeeds({ items, handleNewCart }: Props) {
   const BACKEND_URL = process.env.BACKEND_URL!
   const axiosPrivate = useAxiosPrivate()
+  const router = useRouter()
   const [pending, setPending] = useState(false)
 
   async function handleAddToCart(item: Item) {
     try {
+      const userAuthenticated = await isUserAuthenticated()
+      if (!userAuthenticated) {
+        router.push("/login")
+      }
       setPending(true)
       const response = await axiosPrivate.post("/api/v1/carts",
         JSON.stringify({
