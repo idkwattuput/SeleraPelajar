@@ -90,7 +90,7 @@ export default function Cafe() {
               </SkeletonWrapper>
             </div>
           </div>
-          {carts?.CartItems.length > 0 && (
+          {carts?.CartItems && carts?.CartItems.length > 0 && (
             <div className="mt-4 sticky bottom-0 z-10 lg:hidden">
               <CartSectionMobile carts={carts} onNewCart={onCartChange} resetCart={handleResetCart} />
             </div>

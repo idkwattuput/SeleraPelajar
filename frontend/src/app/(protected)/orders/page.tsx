@@ -8,6 +8,7 @@ import OrderFeed from "./_components/order-feed";
 
 interface CustomOrder extends Order {
   cafe: Cafe
+  created_at: string
 }
 
 export default function Orders() {
@@ -30,11 +31,14 @@ export default function Orders() {
     getCarts()
   }, [])
 
+  function handleOnChange(order: Order) {
+    setOrders(prev => prev.filter(o => o.id !== order.id))
+  }
 
   return (
     <div className="p-4">
-      <h1 className="text-3xl font-bold">Current Orders</h1>
-      <OrderFeed isLoading={loading} orders={orders} />
+      <h1 className="text-2xl lg:text-3xl font-bold">Current Orders</h1>
+      <OrderFeed isLoading={loading} orders={orders} onChange={handleOnChange} />
     </div>
   )
 }

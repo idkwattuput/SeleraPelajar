@@ -9,7 +9,11 @@ async function findAllCurrentOrder(customerId: string) {
     },
     include: {
       cafe: true,
-      OrderItems: true,
+      OrderItems: {
+        include: {
+          item: true
+        }
+      },
     },
     orderBy: {
       created_at: "asc",
@@ -46,7 +50,11 @@ async function findAllHistoryOrder(customerId: string) {
     },
     include: {
       cafe: true,
-      OrderItems: true,
+      OrderItems: {
+        include: {
+          item: true
+        }
+      },
     },
     orderBy: {
       created_at: "asc",

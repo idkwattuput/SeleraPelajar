@@ -9,6 +9,7 @@ import { useParams } from "next/navigation";
 import SkeletonWrapper from "@/components/skeleton-wrapper";
 import { Cafe } from "@/types/cafe";
 import { MapPin } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 interface CustomOrder extends Order {
   cafe: Cafe
@@ -76,21 +77,19 @@ export default function OrderById() {
       {order ? (
         <div>
           <StatusText status={order.status} />
-          <p className="mt-4">Order Details</p>
           <div>
-            <p>Order ID: {order.id}</p>
-            <p>Cafe: {order.cafe.name}</p>
+            <p className="text-muted-foreground">#{order.id}</p>
+            <p className="mt-4">Cafe: {order.cafe.name}</p>
             <p className="flex items-center">
-              <MapPin className="w-4 h-4" />
-              {order.cafe.block}-{order.cafe.lot}
+              Pickup Location: {order.cafe.block}-{order.cafe.lot}
             </p>
           </div>
           <div>
             {order.OrderItems.map((item) => (
               <div key={item.id} className="flex gap-4">
                 <div>
-                  <p>{item.quantity}x {item.item.name}</p>
-                  <p>{item.note}</p>
+                  <p className="font-bold">{item.quantity}x {item.item.name}</p>
+                  <p className="text-muted-foreground">{item.note}</p>
                 </div>
                 <p>RM {Number(Number(item.item.price) * item.quantity).toFixed(2)}</p>
               </div>
@@ -107,25 +106,29 @@ export default function OrderById() {
 
 function StatusText({ status }: { status: "PENDING" | "PREPARING" | "COMPLETED" | "CANCELLED" }) {
   return (
-    <h1 className="text-3xl font-bold">
+    <h1 className="text-3xl font-bold flex items-center gap-2">
       {status === "PENDING" && (
         <>
           We&apos;re reviewing your order details. Please hold on!
+          <Badge className="bg-muted-foreground">{status}</Badge>
         </>
       )}
       {status === "PREPARING" && (
         <>
           Your order is being prepared. Stay tuned for updates!
+          <Badge className="bg-yellow-500">{status}</Badge>
         </>
       )}
       {status === "COMPLETED" && (
         <>
-          Order completed successfully. Enjoy your meal!
+          Order completed successfully. Please pickup your order!
+          <Badge className="bg-emerald-500">{status}</Badge>
         </>
       )}
       {status === "CANCELLED" && (
         <>
-          This order has been cancelled
+          Your order has been cancelled
+          <Badge className="bg-red-500">{status}</Badge>
         </>
       )}
     </h1>
