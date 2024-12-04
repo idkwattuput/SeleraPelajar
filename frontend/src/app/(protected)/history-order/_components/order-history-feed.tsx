@@ -2,7 +2,6 @@ import SkeletonWrapper from "@/components/skeleton-wrapper"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Cafe } from "@/types/cafe"
 import { Order } from "@/types/order"
-import Link from "next/link"
 import { NotepadText } from "lucide-react";
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"

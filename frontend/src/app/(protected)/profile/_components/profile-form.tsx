@@ -25,7 +25,6 @@ import useAxiosPrivate from "@/hooks/use-axios-private"
 import { useEffect, useState } from "react"
 import { User } from "../page"
 import SkeletonWrapper from "@/components/skeleton-wrapper"
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 const FormSchema = z.object({
   firstName: z.string().min(3),

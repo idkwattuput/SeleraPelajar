@@ -1,9 +1,8 @@
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Cafe } from '@/types/cafe'
 import { Order } from '@/types/order'
-import { ReactNode, useState } from 'react'
+import { ReactNode } from 'react'
 
 interface CustomOrder extends Order {
   cafe: Cafe

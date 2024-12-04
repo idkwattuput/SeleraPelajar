@@ -74,10 +74,13 @@ export default function Register() {
       toast.success("Sign Up success 🎉")
       router.push("/home")
     } catch (error) {
+      // @ts-expect-error "idk"
       if (!error?.response) {
         toast.error("Server not respond")
+        // @ts-expect-error "idk"
       } else if (error.response?.status === 400) {
         toast.warning("Input field empty")
+        // @ts-expect-error "idk"
       } else if (error.response?.status === 409) {
         toast.error("This email has been used")
       } else {
@@ -89,11 +92,11 @@ export default function Register() {
   return (
     <div className="h-screen flex flex-col justify-center items-center">
       <div className="mb-4 flex items-center gap-2">
-        <h1 className="text-3xl font-bold font-header italic">Selera Pelajar</h1>
+        <h1 className="font-poppins text-3xl font-bold font-header italic">Selera Pelajar</h1>
       </div>
       <Card className="mx-auto max-w-sm">
         <CardHeader>
-          <CardTitle className="text-2xl">Sign Up</CardTitle>
+          <CardTitle className="font-poppins text-2xl">Sign Up</CardTitle>
           <CardDescription>Enter you information to create an account</CardDescription>
         </CardHeader>
         <CardContent>

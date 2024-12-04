@@ -8,7 +8,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useParams } from "next/navigation";
 import SkeletonWrapper from "@/components/skeleton-wrapper";
 import { Cafe } from "@/types/cafe";
-import { MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 interface CustomOrder extends Order {

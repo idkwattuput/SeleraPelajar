@@ -16,7 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`font-nunito antialiased`}
+        className={`font-roboto antialiased`}
       >
         {children}
         <Toaster richColors />

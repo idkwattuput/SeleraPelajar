@@ -3,11 +3,19 @@ import { MapPin } from "lucide-react"
 import Image from "next/image"
 
 interface Props {
-  cafe: Cafe
+  cafe: Cafe | null
 }
 
 export default function CafeInfo({ cafe }: Props) {
   const BACKEND_URL = process.env.BACKEND_URL!
+
+  if (!cafe) {
+    return (
+      <div>
+        cafe not found
+      </div>
+    )
+  }
 
   return (
     <div className="flex justify-start items-center gap-4">

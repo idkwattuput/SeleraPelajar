@@ -56,10 +56,13 @@ export default function Login() {
       toast.success("Sign In success 🎉")
       router.push("/home")
     } catch (error) {
+      // @ts-expect-error "idk"
       if (!error?.response) {
         toast.error("Server not respond")
+        // @ts-expect-error "idk"
       } else if (error.response?.status === 400) {
         toast.warning("Input field empty")
+        // @ts-expect-error "idk"
       } else if (error.response?.status === 401) {
         toast.error("Email or password is incorrect")
       } else {
@@ -71,11 +74,11 @@ export default function Login() {
   return (
     <div className="h-screen flex flex-col justify-center items-center">
       <div className="mb-4 flex items-center gap-2">
-        <h1 className="text-3xl font-bold font-header italic">Selera Pelajar</h1>
+        <h1 className="font-poppins text-3xl font-bold font-header italic">Selera Pelajar</h1>
       </div>
       <Card className="mx-auto max-w-sm">
         <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
+          <CardTitle className="font-poppins text-2xl">Login</CardTitle>
           <CardDescription>
             Enter your email below to login to your account
           </CardDescription>

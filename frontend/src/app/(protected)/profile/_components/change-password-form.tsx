@@ -22,10 +22,8 @@ import {
 import { Input } from "@/components/ui/input"
 import { Loader2 } from "lucide-react"
 import useAxiosPrivate from "@/hooks/use-axios-private"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { User } from "../page"
-import SkeletonWrapper from "@/components/skeleton-wrapper"
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 const FormSchema = z.object({
   oldPassword: z.string().min(6, {

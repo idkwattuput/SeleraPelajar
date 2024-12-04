@@ -2,7 +2,6 @@ import useAxiosPrivate from "@/hooks/use-axios-private"
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,

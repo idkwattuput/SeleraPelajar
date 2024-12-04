@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import useAxiosPrivate from "@/hooks/use-axios-private";
-import { CartItem } from "@/types/cart";
+import { Cart } from "@/types/cart";
 import { Item } from "@/types/item";
 import { Loader2, Minus, Plus } from "lucide-react";
 import Image from "next/image";
@@ -13,7 +13,7 @@ import { ReactNode, useState } from "react";
 interface Props {
   children: ReactNode
   item: Item
-  onNewCart: (newCart: CartItem[]) => void
+  onNewCart: (newCart: Cart) => void
 }
 
 export default function AddItemDialog({ children, item, onNewCart }: Props) {

@@ -10,7 +10,8 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        nunito: ["Nunito"],
+        poppins: ["Poppins"],
+        roboto: ["Roboto"],
       },
       colors: {
         background: "hsl(var(--background))",

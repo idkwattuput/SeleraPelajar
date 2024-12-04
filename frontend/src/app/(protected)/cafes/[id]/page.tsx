@@ -16,7 +16,7 @@ import CartSectionMobile from "./_components/cart-section-mobile";
 export default function Cafe() {
   const axiosPrivate = useAxiosPrivate()
   const params = useParams<{ tag: string; id: string }>()
-  const [cafes, setCafes] = useState<Cafe>({})
+  const [cafes, setCafes] = useState<Cafe | null>(null)
   const [items, setItems] = useState<Item[]>([])
   const [filteredItems, setFilteredItems] = useState<Item[]>([])
   const [carts, setCarts] = useState<Cart | null>(null)
@@ -35,6 +35,7 @@ export default function Cafe() {
       } catch (error) {
         setLoading(false)
         console.log(error)
+        // @ts-expect-error "idk"
         if (error.response?.status === 404) {
           setNotFound(true)
         }
@@ -49,6 +50,7 @@ export default function Cafe() {
       } catch (error) {
         setLoading(false)
         console.log(error)
+        // @ts-expect-error "idk"
         if (error.response?.status === 404) {
           setNotFound(true)
         }

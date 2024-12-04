@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card } from "@/components/ui/card"
 import useAxiosPrivate from "@/hooks/use-axios-private"
 import { Cart, CartItem } from "@/types/cart"
 import { Minus, Plus, ShoppingBasket, Trash } from "lucide-react"
@@ -9,7 +9,7 @@ import { useState } from "react"
 import OrderSummaryDialog from "./order-summary-dialog"
 
 interface Props {
-  carts: Cart
+  carts: Cart | null
   onNewCart: (newCart: Cart) => void
   resetCart: () => void
 }

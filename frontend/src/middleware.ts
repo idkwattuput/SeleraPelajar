@@ -25,7 +25,7 @@ export async function middleware(request: NextRequest) {
   }
 
   if (pathname === "/login" || pathname === "/register") {
-    const previousPage = request.headers.get("referer") || "/dashboard";
+    const previousPage = request.headers.get("referer") || "/home";
     return NextResponse.redirect(new URL(previousPage, request.url));
   }
 
