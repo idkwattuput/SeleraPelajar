@@ -1,6 +1,7 @@
 import express from "express";
 import multer from "multer";
 import path from "path";
+import { verifyJWT } from "../middlewares/jwt";
 import cafeController from "../controllers/cafe-controller";
 
 const router = express.Router();
@@ -21,13 +22,13 @@ const upload = multer({ storage: storage });
 router
   .route("/")
   .get(cafeController.getCafes)
-  .post(upload.single("cafeImage"), cafeController.createCafe)
+  .post(upload.single("cafeImage"), verifyJWT, cafeController.createCafe)
   .put(cafeController.updateCafe);
 router
   .route("/image")
-  .put(upload.single("cafeImage"), cafeController.updateCafeImage);
-router.route("/items").get(cafeController.getItemsByCafeId);
-router.route("/seller").get(cafeController.getCafeBySellerId);
+  .put(upload.single("cafeImage"), verifyJWT, cafeController.updateCafeImage);
+router.route("/items").get(verifyJWT, cafeController.getItemsByCafeId);
+router.route("/seller").get(verifyJWT, cafeController.getCafeBySellerId);
 router.route("/:id").get(cafeController.getCafe);
 
 export default router;
