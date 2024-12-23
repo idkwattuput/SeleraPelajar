@@ -55,7 +55,7 @@ function DesktopNavbar() {
   }
 
   return (
-    <nav className="hidden p-4 md:flex justify-between items-center">
+    <nav className="font-poppins hidden p-4 md:flex justify-between items-center border-b border-muted drop-shadow-sm">
       <div className="flex items-center gap-2">
         <h1 className="text-3xl font-bold italic">Selera Pelajar</h1>
       </div>

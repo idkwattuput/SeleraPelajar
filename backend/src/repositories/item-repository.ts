@@ -40,7 +40,20 @@ async function save(
   });
 }
 
+async function updateAvailable(id: string, isAvailable: boolean) {
+  return await prisma.items.update({
+    where: { id: id },
+    data: {
+      is_available: isAvailable,
+    },
+    include: {
+      category: true,
+    },
+  });
+}
+
 export default {
   findBySellerId,
   save,
+  updateAvailable,
 };

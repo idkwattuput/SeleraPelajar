@@ -36,6 +36,11 @@ export default function Cafe() {
     setItems((prev) => [...prev, item])
   }
 
+  function handleItemChange(item: Item) {
+    setItems(prev => prev.map((i) => i.id === item.id ? item : i))
+  }
+
+
   function handleUpdatedCafe(updatedCafe: Cafe) {
     setCafe(updatedCafe)
   }
@@ -43,6 +48,7 @@ export default function Cafe() {
   return (
     <div className="p-4">
       <CafeProfile cafe={cafe} onChange={handleUpdatedCafe} />
+      <hr className="my-4" />
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold">Menu</h1>
         <CreateItemDialog onChange={handleNewItemChange}>
@@ -51,7 +57,7 @@ export default function Cafe() {
           </Button>
         </CreateItemDialog>
       </div>
-      <ItemFeed items={items} isLoading={loading} />
+      <ItemFeed items={items} isLoading={loading} onAvailableItem={handleItemChange} />
     </div>
   )
 }

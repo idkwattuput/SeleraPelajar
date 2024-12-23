@@ -25,6 +25,25 @@ async function createItem(req: Request, res: Response, next: NextFunction) {
   }
 }
 
+async function updateAvailableItem(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const id = req.params.id;
+    const { isAvailable } = req.body;
+    if (typeof isAvailable !== "boolean") {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+    const updatedItem = await itemRepository.updateAvailable(id, isAvailable);
+    return res.json({ data: updatedItem });
+  } catch (error) {
+    next(error);
+  }
+}
+
 export default {
   createItem,
+  updateAvailableItem,
 };
