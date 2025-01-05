@@ -6,8 +6,8 @@ async function find(id: string) {
     select: {
       first_name: true,
       last_name: true,
-      email: true
-    }
+      email: true,
+    },
   });
 }
 
@@ -50,20 +50,46 @@ async function updateRefreshToken(id: string, refreshToken: string | null) {
   });
 }
 
-async function update(id: string, firstName: string, lastName: string, email: string) {
+async function update(
+  id: string,
+  firstName: string,
+  lastName: string,
+  email: string,
+) {
   return prisma.users.update({
     where: { id: id },
     data: {
       first_name: firstName,
       last_name: lastName,
-      email: email
+      email: email,
     },
     select: {
       first_name: true,
       last_name: true,
-      email: true
-    }
-  })
+      email: true,
+    },
+  });
+}
+
+async function findPasswordByUserId(id: string) {
+  return prisma.users.findUnique({
+    where: { id: id },
+    select: { password: true },
+  });
+}
+
+async function updatePassword(id: string, newPassword: string) {
+  return prisma.users.update({
+    where: { id: id },
+    data: {
+      password: newPassword,
+    },
+    select: {
+      first_name: true,
+      last_name: true,
+      email: true,
+    },
+  });
 }
 
 export default {
@@ -72,5 +98,7 @@ export default {
   findByRefreshToken,
   save,
   updateRefreshToken,
-  update
+  update,
+  findPasswordByUserId,
+  updatePassword,
 };

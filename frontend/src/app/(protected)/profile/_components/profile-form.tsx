@@ -132,6 +132,7 @@ export default function ProfileForm({ user, isLoading, onChange }: Props) {
         />
         <div className="flex items-center gap-4">
           <Button
+            type="button"
             disabled={pending}
             variant={"secondary"}
             onClick={() => form.reset()}

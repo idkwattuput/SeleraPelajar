@@ -57,7 +57,8 @@ export default function ChangePasswordForm({ onChange }: Props) {
       setPending(true)
       const response = await axiosPrivate.put("/api/v1/users/change-password",
         JSON.stringify({
-          password: data.newPassword,
+          oldPassword: data.oldPassword,
+          newPassword: data.newPassword
         })
       )
       onChange(response.data.data)
@@ -66,6 +67,18 @@ export default function ChangePasswordForm({ onChange }: Props) {
     } catch (error) {
       setPending(false)
       console.log(error)
+      // @ts-expect-error "idk"
+      if (!error?.response) {
+        toast.error("Server not respond")
+        // @ts-expect-error "idk"
+      } else if (error.response?.status === 404) {
+        toast.warning("User Not Found")
+        // @ts-expect-error "idk"
+      } else if (error.response?.status === 400) {
+        toast.error("Fuck Up")
+      } else {
+        toast.error("Internal Server Error")
+      }
     }
   }
 
@@ -113,6 +126,7 @@ export default function ChangePasswordForm({ onChange }: Props) {
         />
         <div className="flex items-center gap-4">
           <Button
+            type="button"
             disabled={pending}
             variant={"secondary"}
             onClick={() => form.reset()}
