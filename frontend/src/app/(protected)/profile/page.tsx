@@ -3,7 +3,7 @@
 import useAxiosPrivate from "@/hooks/use-axios-private"
 import { useEffect, useState } from "react"
 import ProfileForm from "./_components/profile-form"
-import ChangePasswordForm from "./_components/change-password-form"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 export interface User {
   first_name: string
@@ -36,12 +36,14 @@ export default function Profile() {
   }
 
   return (
-    <div className="p-4">
-      <h1 className="mb-4 text-2xl lg:text-3xl font-bold">Profile</h1>
-      <ProfileForm user={user} isLoading={loading} onChange={handleUserChange} />
-      <h1 className="my-4 text-2xl lg:text-3xl font-bold">Change Password</h1>
-      <ChangePasswordForm onChange={handleUserChange} />
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle>Profile</CardTitle>
+        <CardDescription>Profile information will be displayed on seller dashboard</CardDescription>
+        <CardContent className="p-0 pt-4">
+          <ProfileForm user={user} isLoading={loading} onChange={handleUserChange} />
+        </CardContent>
+      </CardHeader>
+    </Card>
   )
 }
-

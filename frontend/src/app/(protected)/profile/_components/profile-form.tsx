@@ -82,7 +82,7 @@ export default function ProfileForm({ user, isLoading, onChange }: Props) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="max-w-[500px] grid gap-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
         <div className="flex items-center gap-4">
           <FormField
             control={form.control}
@@ -130,20 +130,12 @@ export default function ProfileForm({ user, isLoading, onChange }: Props) {
             </FormItem>
           )}
         />
-        <div className="flex items-center gap-4">
-          <Button
-            type="button"
-            disabled={pending}
-            variant={"secondary"}
-            onClick={() => form.reset()}
-          >
-            Cancel
-          </Button>
+        <div className="flex justify-end items-end gap-4">
           <Button
             type="submit"
             disabled={!form.formState.isDirty || pending}
           >
-            {pending ? (<Loader2 />) : "Save"}
+            {pending ? (<Loader2 className="animate-spin" />) : "Save"}
           </Button>
         </div>
       </form>

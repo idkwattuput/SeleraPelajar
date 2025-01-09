@@ -1,3 +1,5 @@
+"use client"
+
 import {
   toast
 } from "sonner"
@@ -23,7 +25,6 @@ import { Input } from "@/components/ui/input"
 import { Loader2 } from "lucide-react"
 import useAxiosPrivate from "@/hooks/use-axios-private"
 import { useState } from "react"
-import { User } from "../page"
 
 const FormSchema = z.object({
   oldPassword: z.string().min(6, {
@@ -33,13 +34,12 @@ const FormSchema = z.object({
     message: "Password must be at least 6 characters.",
   }),
   confirmPassword: z.string(),
+}).refine((data) => data.newPassword === data.confirmPassword, {
+  message: "Password don't match",
+  path: ["confirmPassword"]
 });
 
-interface Props {
-  onChange: (user: User) => void
-}
-
-export default function ChangePasswordForm({ onChange }: Props) {
+export default function ChangePasswordForm() {
   const axiosPrivate = useAxiosPrivate()
   const [pending, setPending] = useState(false)
 
@@ -55,13 +55,13 @@ export default function ChangePasswordForm({ onChange }: Props) {
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
       setPending(true)
-      const response = await axiosPrivate.put("/api/v1/users/change-password",
+      await axiosPrivate.put("/api/v1/users/change-password",
         JSON.stringify({
           oldPassword: data.oldPassword,
           newPassword: data.newPassword
         })
       )
-      onChange(response.data.data)
+      form.reset()
       toast.success("Updated password success 🎉")
       setPending(false)
     } catch (error) {
@@ -75,7 +75,7 @@ export default function ChangePasswordForm({ onChange }: Props) {
         toast.warning("User Not Found")
         // @ts-expect-error "idk"
       } else if (error.response?.status === 400) {
-        toast.error("Fuck Up")
+        toast.error(error.response?.data?.message)
       } else {
         toast.error("Internal Server Error")
       }
@@ -84,7 +84,7 @@ export default function ChangePasswordForm({ onChange }: Props) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="max-w-[500px] grid gap-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
         <FormField
           control={form.control}
           name="oldPassword"
@@ -124,20 +124,12 @@ export default function ChangePasswordForm({ onChange }: Props) {
             </FormItem>
           )}
         />
-        <div className="flex items-center gap-4">
-          <Button
-            type="button"
-            disabled={pending}
-            variant={"secondary"}
-            onClick={() => form.reset()}
-          >
-            Cancel
-          </Button>
+        <div className="flex justify-end items-center gap-4">
           <Button
             type="submit"
             disabled={!form.formState.isDirty || pending}
           >
-            {pending ? (<Loader2 />) : "Save"}
+            {pending ? (<Loader2 className="animate-spin" />) : "Save"}
           </Button>
         </div>
       </form>
