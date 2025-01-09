@@ -75,6 +75,7 @@ export default function ChangePasswordForm() {
         toast.warning("User Not Found")
         // @ts-expect-error "idk"
       } else if (error.response?.status === 400) {
+        // @ts-expect-error "idk"
         toast.error(error.response?.data?.message)
       } else {
         toast.error("Internal Server Error")
