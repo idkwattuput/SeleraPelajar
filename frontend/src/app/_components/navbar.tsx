@@ -28,7 +28,7 @@ export default function Navbar() {
 
 function DesktopNavbar() {
   return (
-    <nav className="font-poppins hidden sticky top-0 z-10 py-4 px-32 md:flex justify-between items-center">
+    <nav className="font-poppins hidden bg-white border-b border-muted drop-shadow-sm sticky top-0 z-10 py-4 md:px-8 lg:px-32 md:flex justify-between items-center">
       <div className="flex items-center gap-2">
         <h1 className="md:text-2xl xl:text-3xl font-bold italic">Selera Pelajar</h1>
       </div>
