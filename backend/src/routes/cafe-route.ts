@@ -23,7 +23,7 @@ router
   .route("/")
   .get(cafeController.getCafes)
   .post(upload.single("cafeImage"), verifyJWT, cafeController.createCafe)
-  .put(cafeController.updateCafe);
+  .put(verifyJWT, cafeController.updateCafe);
 router
   .route("/image")
   .put(upload.single("cafeImage"), verifyJWT, cafeController.updateCafeImage);
