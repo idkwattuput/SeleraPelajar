@@ -9,17 +9,20 @@ import useAxiosPrivate from "@/hooks/use-axios-private";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import EditItemDialog from "./edit-item-dialog";
 import { useEffect, useState } from "react";
+import DeleteItemDialog from "./delete-item-dialog";
 
 interface Props {
   items: Item[]
   isLoading: boolean
   onAvailableItem: (item: Item) => Promise<void>
+  onItemDelete: (item: Item) => Promise<void>
 }
 
-export default function ItemFeed({ items, isLoading, onAvailableItem }: Props) {
+export default function ItemFeed({ items, isLoading, onItemDelete, onAvailableItem }: Props) {
   const axiosPrivate = useAxiosPrivate()
   const BACKEND_URL = process.env.BACKEND_URL!
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   const [item, setItem] = useState<Item | null>(null)
 
   if (isLoading) {
@@ -35,12 +38,6 @@ export default function ItemFeed({ items, isLoading, onAvailableItem }: Props) {
       </SkeletonWrapper>
     )
   }
-
-  //if (isDialogOpen) {
-  //  return (
-  //    <EditItemDialog item={item} onChange={onAvailableItem} open={isDialogOpen} onOpenChange={setIsDialogOpen} />
-  //  )
-  //}
 
   async function handleCheckChange(id: string, isAvailable: boolean) {
     try {
@@ -64,8 +61,11 @@ export default function ItemFeed({ items, isLoading, onAvailableItem }: Props) {
         </div>
       ) : (
         <div className="grid grid-cols-3 gap-4">
-          {isDialogOpen && (
-            <EditItemDialog item={item} onChange={onAvailableItem} open={isDialogOpen} onOpenChange={setIsDialogOpen} />
+          {isEditDialogOpen && (
+            <EditItemDialog item={item} onChange={onAvailableItem} open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen} />
+          )}
+          {isDeleteDialogOpen && (
+            <DeleteItemDialog item={item} onChange={onItemDelete} open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen} />
           )}
           {items.map((i) => (
             <Card
@@ -104,15 +104,20 @@ export default function ItemFeed({ items, isLoading, onAvailableItem }: Props) {
                 <DropdownMenuContent>
                   <DropdownMenuItem
                     onClick={() => {
-                      console.log(i)
                       setItem(i)
-                      setIsDialogOpen(true)
+                      setIsEditDialogOpen(true)
                     }}
                   >
                     <Pencil />
                     <span>Edit</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="text-red-500 hover:text-red-500">
+                  <DropdownMenuItem
+                    className="text-red-500 hover:text-red-500"
+                    onClick={() => {
+                      setItem(i)
+                      setIsDeleteDialogOpen(true)
+                    }}
+                  >
                     <Trash />
                     <span>Delete</span>
                   </DropdownMenuItem>

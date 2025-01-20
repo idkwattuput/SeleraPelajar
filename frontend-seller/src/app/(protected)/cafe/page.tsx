@@ -40,6 +40,9 @@ export default function Cafe() {
     setItems(prev => prev.map((i) => i.id === item.id ? item : i))
   }
 
+  function handleItemDelete(item: Item) {
+    setItems(prev => prev.filter((i) => i.id !== item.id))
+  }
 
   function handleUpdatedCafe(updatedCafe: Cafe) {
     setCafe(updatedCafe)
@@ -57,7 +60,7 @@ export default function Cafe() {
           </Button>
         </CreateItemDialog>
       </div>
-      <ItemFeed items={items} isLoading={loading} onAvailableItem={handleItemChange} />
+      <ItemFeed items={items} isLoading={loading} onAvailableItem={handleItemChange} onItemDelete={handleItemDelete} />
     </div>
   )
 }

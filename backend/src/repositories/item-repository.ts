@@ -75,9 +75,16 @@ async function updateAvailable(id: string, isAvailable: boolean) {
   });
 }
 
+async function remove(id: string) {
+  return await prisma.items.delete({
+    where: { id: id },
+  });
+}
+
 export default {
   findBySellerId,
   save,
   update,
   updateAvailable,
+  remove,
 };

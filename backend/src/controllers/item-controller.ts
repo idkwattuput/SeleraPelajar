@@ -61,8 +61,19 @@ async function updateAvailableItem(
   }
 }
 
+async function deleteItem(req: Request, res: Response, next: NextFunction) {
+  try {
+    const id = req.params.id;
+    await itemRepository.remove(id);
+    return res.sendStatus(204);
+  } catch (error) {
+    next(error);
+  }
+}
+
 export default {
   createItem,
   updateItem,
   updateAvailableItem,
+  deleteItem,
 };
