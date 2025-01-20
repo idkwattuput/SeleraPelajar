@@ -25,6 +25,24 @@ async function createItem(req: Request, res: Response, next: NextFunction) {
   }
 }
 
+async function updateItem(req: Request, res: Response, next: NextFunction) {
+  try {
+    const id = req.params.id;
+    const { name, description, price, categoryId, image } = req.body;
+    const updatedItem = await itemRepository.update(
+      id,
+      name,
+      description,
+      price,
+      categoryId,
+      image,
+    );
+    return res.json({ data: updatedItem });
+  } catch (error) {
+    next(error);
+  }
+}
+
 async function updateAvailableItem(
   req: Request,
   res: Response,
@@ -45,5 +63,6 @@ async function updateAvailableItem(
 
 export default {
   createItem,
+  updateItem,
   updateAvailableItem,
 };

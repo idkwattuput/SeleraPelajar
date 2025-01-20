@@ -40,6 +40,29 @@ async function save(
   });
 }
 
+async function update(
+  id: string,
+  name: string,
+  description: string,
+  price: string,
+  categoryId: string,
+  image: string | null,
+) {
+  return await prisma.items.update({
+    where: { id: id },
+    data: {
+      name: name,
+      description: description,
+      price: price,
+      category_id: categoryId,
+      image: image,
+    },
+    include: {
+      category: true,
+    },
+  });
+}
+
 async function updateAvailable(id: string, isAvailable: boolean) {
   return await prisma.items.update({
     where: { id: id },
@@ -55,5 +78,6 @@ async function updateAvailable(id: string, isAvailable: boolean) {
 export default {
   findBySellerId,
   save,
+  update,
   updateAvailable,
 };

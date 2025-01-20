@@ -10,10 +10,11 @@ import { Check, ChevronsUpDown } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 interface Props {
+  categoryName: string
   onChange: (value: string) => void
 }
 
-export default function CategoryComboBox({ onChange }: Props) {
+export default function CategoryComboBox({ categoryName, onChange }: Props) {
   const axiosPrivate = useAxiosPrivate()
   const [loading, setLoading] = useState(true)
   const [open, setOpen] = useState(false)
@@ -48,7 +49,7 @@ export default function CategoryComboBox({ onChange }: Props) {
     }
   }, [])
 
-  const selectedCategory = categories.find((category) => category.name === value)
+  const selectedCategory = categories.find((category) => category.name === value || categoryName)
 
   const successCallback = useCallback((category: any) => {
     setCategories((prev) => [...prev, category])
