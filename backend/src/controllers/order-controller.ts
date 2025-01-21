@@ -44,7 +44,11 @@ async function getHistoryOrders(
 ) {
   try {
     const userId = (req as any).user.id;
-    const historyOrders = await orderRepository.findAllHistoryOrder(userId);
+    const role = (req as any).user.role;
+    const historyOrders = await orderRepository.findAllHistoryOrder(
+      userId,
+      role,
+    );
     return res.json({ data: historyOrders });
   } catch (error) {
     next(error);

@@ -37,12 +37,12 @@ async function register(req: Request, res: Response, next: NextFunction) {
     );
 
     const accessToken = jwt.sign(
-      { id: newUser.id },
+      { id: newUser.id, role: newUser.role },
       Bun.env.ACCESS_TOKEN_SECRET!,
       { expiresIn: Bun.env.ACCESS_TOKEN_EXPIRES! },
     );
     const refreshToken = jwt.sign(
-      { id: newUser.id },
+      { id: newUser.id, role: newUser.role },
       Bun.env.REFRESH_TOKEN_SECRET!,
       { expiresIn: Bun.env.REFRESH_TOKEN_EXPIRES! },
     );
@@ -93,12 +93,12 @@ async function login(req: Request, res: Response, next: NextFunction) {
     }
 
     const accessToken = jwt.sign(
-      { id: isEmailExist.id },
+      { id: isEmailExist.id, role: isEmailExist.role },
       Bun.env.ACCESS_TOKEN_SECRET!,
       { expiresIn: Bun.env.ACCESS_TOKEN_EXPIRES! },
     );
     const refreshToken = jwt.sign(
-      { id: isEmailExist.id },
+      { id: isEmailExist.id, role: isEmailExist.role },
       Bun.env.REFRESH_TOKEN_SECRET!,
       { expiresIn: Bun.env.REFRESH_TOKEN_EXPIRES! },
     );
@@ -140,7 +140,10 @@ async function refresh(req: Request, res: Response, next: NextFunction) {
       }
 
       const accessToken = jwt.sign(
-        { id: (decode as { id: number }).id },
+        {
+          id: (decode as { id: number }).id,
+          role: (decode as { role: string }).role,
+        },
         Bun.env.ACCESS_TOKEN_SECRET!,
         { expiresIn: Bun.env.ACCESS_TOKEN_EXPIRES! },
       );

@@ -1,5 +1,5 @@
 import { prisma } from "../database/db";
-import type { OrderStatus } from "@prisma/client";
+import type { OrderStatus, Role } from "@prisma/client";
 
 async function findAllCurrentOrder(customerId: string) {
   return prisma.orders.findMany({
@@ -11,8 +11,8 @@ async function findAllCurrentOrder(customerId: string) {
       cafe: true,
       OrderItems: {
         include: {
-          item: true
-        }
+          item: true,
+        },
       },
     },
     orderBy: {
@@ -42,23 +42,71 @@ async function findAllCurrentOrderSeller(cafeId: string) {
   });
 }
 
-async function findAllHistoryOrder(customerId: string) {
-  return prisma.orders.findMany({
-    where: {
-      customer_id: customerId,
-      status: { in: ["COMPLETED", "CANCELLED"] },
-    },
-    include: {
-      cafe: true,
-      OrderItems: {
+async function findAllHistoryOrder(customerId: string, role: Role) {
+  //return prisma.orders.findMany({
+  //  where: {
+  //    customer_id: customerId,
+  //    status: { in: ["COMPLETED", "CANCELLED"] },
+  //  },
+  //  include: {
+  //    cafe: true,
+  //    OrderItems: {
+  //      include: {
+  //        item: true
+  //      }
+  //    },
+  //  },
+  //  orderBy: {
+  //    created_at: "desc",
+  //  },
+  //});
+  return prisma.$transaction(async (p) => {
+    if (role === "CUSTOMER") {
+      return await p.orders.findMany({
+        where: {
+          customer_id: customerId,
+          status: { in: ["COMPLETED", "CANCELLED"] },
+        },
         include: {
-          item: true
-        }
-      },
-    },
-    orderBy: {
-      created_at: "desc",
-    },
+          cafe: true,
+          OrderItems: {
+            include: {
+              item: true,
+            },
+          },
+        },
+        orderBy: {
+          created_at: "desc",
+        },
+      });
+    } else {
+      const isCafeExist = await p.cafes.findUnique({
+        where: { seller_id: customerId },
+        select: {
+          id: true,
+        },
+      });
+      if (!isCafeExist) {
+        return null;
+      }
+      return await p.orders.findMany({
+        where: {
+          cafe_id: isCafeExist.id,
+          status: { in: ["COMPLETED", "CANCELLED"] },
+        },
+        include: {
+          cafe: true,
+          OrderItems: {
+            include: {
+              item: true,
+            },
+          },
+        },
+        orderBy: {
+          created_at: "desc",
+        },
+      });
+    }
   });
 }
 
