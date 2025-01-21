@@ -43,6 +43,17 @@ async function updateItem(req: Request, res: Response, next: NextFunction) {
   }
 }
 
+async function updateImage(req: Request, res: Response, next: NextFunction) {
+  try {
+    const id = req.params.id;
+    const itemImage = req.file?.filename;
+    const updatedItem = await itemRepository.updateImage(id, itemImage);
+    return res.json({ data: updatedItem });
+  } catch (error) {
+    next(error);
+  }
+}
+
 async function updateAvailableItem(
   req: Request,
   res: Response,
@@ -75,5 +86,6 @@ export default {
   createItem,
   updateItem,
   updateAvailableItem,
+  updateImage,
   deleteItem,
 };

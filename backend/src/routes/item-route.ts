@@ -23,6 +23,9 @@ router
   .route("/:id")
   .put(itemController.updateItem)
   .delete(itemController.deleteItem);
+router
+  .route("/image/:id")
+  .put(upload.single("itemImage"), itemController.updateImage);
 router.route("/available/:id").put(itemController.updateAvailableItem);
 
 export default router;

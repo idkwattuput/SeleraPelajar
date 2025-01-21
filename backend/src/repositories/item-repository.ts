@@ -46,7 +46,6 @@ async function update(
   description: string,
   price: string,
   categoryId: string,
-  image: string | null,
 ) {
   return await prisma.items.update({
     where: { id: id },
@@ -55,6 +54,17 @@ async function update(
       description: description,
       price: price,
       category_id: categoryId,
+    },
+    include: {
+      category: true,
+    },
+  });
+}
+
+async function updateImage(id: string, image: string) {
+  return await prisma.items.update({
+    where: { id: id },
+    data: {
       image: image,
     },
     include: {
@@ -86,5 +96,6 @@ export default {
   save,
   update,
   updateAvailable,
+  updateImage,
   remove,
 };

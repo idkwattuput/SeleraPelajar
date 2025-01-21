@@ -1,15 +1,17 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Item } from "@/types/item"
-import { Coffee, EllipsisVertical, Pencil, Trash } from "lucide-react";
+import { Coffee, EllipsisVertical, Images, Pencil, Trash } from "lucide-react";
 import Image from "next/image";
 import SkeletonWrapper from "@/components/skeleton-wrapper";
 import { Switch } from "@/components/ui/switch";
 import useAxiosPrivate from "@/hooks/use-axios-private";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import EditItemDialog from "./edit-item-dialog";
 import { useEffect, useState } from "react";
 import DeleteItemDialog from "./delete-item-dialog";
+import EditItemImageDialog from "./edit-item-image-dialog";
+import { Button } from "@/components/ui/button";
 
 interface Props {
   items: Item[]
@@ -21,6 +23,7 @@ interface Props {
 export default function ItemFeed({ items, isLoading, onItemDelete, onAvailableItem }: Props) {
   const axiosPrivate = useAxiosPrivate()
   const BACKEND_URL = process.env.BACKEND_URL!
+  const [isEditImageDialogOpen, setIsEditImageDialogOpen] = useState(false)
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   const [item, setItem] = useState<Item | null>(null)
@@ -67,6 +70,9 @@ export default function ItemFeed({ items, isLoading, onItemDelete, onAvailableIt
           {isDeleteDialogOpen && (
             <DeleteItemDialog item={item} onChange={onItemDelete} open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen} />
           )}
+          {isEditImageDialogOpen && (
+            <EditItemImageDialog item={item} onChange={onAvailableItem} open={isEditImageDialogOpen} onOpenChange={setIsEditImageDialogOpen} />
+          )}
           {items.map((i) => (
             <Card
               key={i.id}
@@ -95,34 +101,44 @@ export default function ItemFeed({ items, isLoading, onItemDelete, onAvailableIt
                     height={100}
                     className=" rounded-lg"
                   />
+                  <DropdownMenu>
+                    <DropdownMenuTrigger className="absolute top-0 right-0">
+                      <EllipsisVertical className="hover:cursor-pointer" />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuItem
+                        onClick={() => {
+                          setItem(i)
+                          setIsEditImageDialogOpen(true)
+                        }}
+                      >
+                        <Images />
+                        <span>{i.image ? "Edit" : "Add"} Images</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem
+                        onClick={() => {
+                          setItem(i)
+                          setIsEditDialogOpen(true)
+                        }}
+                      >
+                        <Pencil />
+                        <span>Edit Item</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="text-red-500 hover:text-red-500"
+                        onClick={() => {
+                          setItem(i)
+                          setIsDeleteDialogOpen(true)
+                        }}
+                      >
+                        <Trash />
+                        <span>Delete</span>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
               )}
-              <DropdownMenu>
-                <DropdownMenuTrigger>
-                  <EllipsisVertical className="hover:cursor-pointer" />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuItem
-                    onClick={() => {
-                      setItem(i)
-                      setIsEditDialogOpen(true)
-                    }}
-                  >
-                    <Pencil />
-                    <span>Edit</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    className="text-red-500 hover:text-red-500"
-                    onClick={() => {
-                      setItem(i)
-                      setIsDeleteDialogOpen(true)
-                    }}
-                  >
-                    <Trash />
-                    <span>Delete</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
             </Card>
           ))}
         </div>
