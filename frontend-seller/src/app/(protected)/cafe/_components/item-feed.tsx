@@ -92,7 +92,7 @@ export default function ItemFeed({ items, isLoading, onItemDelete, onAvailableIt
                   <Switch checked={i.is_available} onClick={() => handleCheckChange(i.id, !i.is_available)} />
                 </div>
               </div>
-              {i.image && (
+              {i.image ? (
                 <div className="relative">
                   <Image
                     src={`${BACKEND_URL}/items/${i.image}`}
@@ -138,6 +138,44 @@ export default function ItemFeed({ items, isLoading, onItemDelete, onAvailableIt
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
+              ) : (
+                <DropdownMenu>
+                  <DropdownMenuTrigger>
+                    <EllipsisVertical className="hover:cursor-pointer" />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem
+                      onClick={() => {
+                        setItem(i)
+                        setIsEditImageDialogOpen(true)
+                      }}
+                    >
+                      <Images />
+                      <span>{i.image ? "Edit" : "Add"} Images</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      onClick={() => {
+                        setItem(i)
+                        setIsEditDialogOpen(true)
+                      }}
+                    >
+                      <Pencil />
+                      <span>Edit Item</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      className="text-red-500 hover:text-red-500"
+                      onClick={() => {
+                        setItem(i)
+                        setIsDeleteDialogOpen(true)
+                      }}
+                    >
+                      <Trash />
+                      <span>Delete</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+
               )}
             </Card>
           ))}
