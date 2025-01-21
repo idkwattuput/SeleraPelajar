@@ -129,8 +129,10 @@ dist
 
 # https://nextjs.org/blog/next-9-1#public-directory-support
 
-# public/cafes/*.jpg
-# public/cafes/*.png
+public/cafes/*.jpg
+public/cafes/*.png
+public/items/*.png
+public/items/*.png
 
 # vuepress build output
 
