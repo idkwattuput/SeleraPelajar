@@ -77,8 +77,8 @@ function DesktopNavbar() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <Link href={"/setting"}>
-                  <DropdownMenuItem>Setting</DropdownMenuItem>
+                <Link href={"/profile"}>
+                  <DropdownMenuItem>Profile</DropdownMenuItem>
                 </Link>
                 <DropdownMenuItem onClick={logout} className="text-red-500">
                   Logout
