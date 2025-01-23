@@ -1,11 +1,12 @@
 import SkeletonWrapper from "@/components/skeleton-wrapper"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Order } from "@/types/order"
+import { Order, OrderItem } from "@/types/order"
 import { NotepadText } from "lucide-react"
 import CancelOrderDialog from "./cancel-order-dialog"
 import AcceptOrderDialog from "./accept-order-dialog"
 import CompleteOrderDialog from "./complete-order-dialog"
+import { Item } from "@/types/item"
 
 interface Props {
   orders: Order[]
@@ -15,6 +16,10 @@ interface Props {
 }
 
 export default function OrderFeed({ orders, isLoading, onCancelChange, onAcceptChange }: Props) {
+
+  function countQuantityItem(items: OrderItem[]) {
+    return items.reduce((total, item) => total + item.quantity, 0)
+  }
 
   if (isLoading) {
     return (
@@ -41,7 +46,7 @@ export default function OrderFeed({ orders, isLoading, onCancelChange, onAcceptC
                   <CardDescription>Total: RM {Number(order.total_price).toFixed(2)}</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  Item: {order.OrderItems.length}
+                  Item: {countQuantityItem(order.OrderItems)}
                 </CardContent>
                 <CardFooter className="flex justify-end items-end gap-4">
                   {order.status === "PENDING" ? (

@@ -17,6 +17,7 @@ export default function Order() {
       try {
         setLoading(true)
         const response = await axiosPrivate.get("/api/v1/orders/seller")
+        console.log(response.data.data)
         setOrders(response.data.data)
         setLoading(false)
       } catch (error) {

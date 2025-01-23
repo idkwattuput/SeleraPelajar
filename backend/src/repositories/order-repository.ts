@@ -34,7 +34,11 @@ async function findAllCurrentOrderSeller(cafeId: string) {
           last_name: true,
         },
       },
-      OrderItems: true,
+      OrderItems: {
+        include: {
+          item: true,
+        },
+      },
     },
     orderBy: {
       status: "asc",
@@ -43,23 +47,6 @@ async function findAllCurrentOrderSeller(cafeId: string) {
 }
 
 async function findAllHistoryOrder(customerId: string, role: Role) {
-  //return prisma.orders.findMany({
-  //  where: {
-  //    customer_id: customerId,
-  //    status: { in: ["COMPLETED", "CANCELLED"] },
-  //  },
-  //  include: {
-  //    cafe: true,
-  //    OrderItems: {
-  //      include: {
-  //        item: true
-  //      }
-  //    },
-  //  },
-  //  orderBy: {
-  //    created_at: "desc",
-  //  },
-  //});
   return prisma.$transaction(async (p) => {
     if (role === "CUSTOMER") {
       return await p.orders.findMany({
