@@ -1,17 +1,19 @@
 "use client"
 
 import { useEffect, useState } from "react";
-import ItemFeed from "./_components/item-feed";
-import { Item } from "@/types/item";
+import Image from "next/image";
 import useAxiosPrivate from "@/hooks/use-axios-private";
-import CreateItemDialog from "./_components/create-item-dialog";
 import { Button } from "@/components/ui/button";
 import type { Cafe } from "@/types/cafe";
-import CafeProfile from "./_components/cafe-profile";
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import SkeletonWrapper from "@/components/skeleton-wrapper";
+import EditCafeImageDialog from "./_components/edit-cafe-image-dialog";
+import { Images, Pencil, Plus } from "lucide-react";
+import EditCafeForm from "./_components/edit-cafe-form";
 
 export default function Cafe() {
+  const BACKEND_URL = process.env.BACKEND_URL!
   const axiosPrivate = useAxiosPrivate()
-  const [items, setItems] = useState<Item[]>([])
   const [cafe, setCafe] = useState<Cafe | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -19,9 +21,7 @@ export default function Cafe() {
     async function getItems() {
       try {
         setLoading(true)
-        const response = await axiosPrivate.get("/api/v1/cafes/items")
         const anotherResponse = await axiosPrivate.get("/api/v1/cafes/seller")
-        setItems(response.data.data)
         setCafe(anotherResponse.data.data)
         setLoading(false)
       } catch (error) {
@@ -32,35 +32,76 @@ export default function Cafe() {
     getItems()
   }, [])
 
-  function handleNewItemChange(item: Item) {
-    setItems((prev) => [...prev, item])
-  }
-
-  function handleItemChange(item: Item) {
-    setItems(prev => prev.map((i) => i.id === item.id ? item : i))
-  }
-
-  function handleItemDelete(item: Item) {
-    setItems(prev => prev.filter((i) => i.id !== item.id))
-  }
-
   function handleUpdatedCafe(updatedCafe: Cafe) {
     setCafe(updatedCafe)
   }
 
+  if (loading) {
+    return (
+      <div className="p-4 flex gap-4">
+        <SkeletonWrapper isLoading={loading} className="w-[200px]">
+          <Card>
+            <CardHeader>
+              <CardTitle>Loading</CardTitle>
+              <CardDescription>Loading</CardDescription>
+            </CardHeader>
+          </Card>
+        </SkeletonWrapper>
+        <SkeletonWrapper isLoading={loading} className="flex-1">
+          <Card>
+            <CardHeader>
+              <CardTitle>Loading</CardTitle>
+              <CardDescription>Loading</CardDescription>
+            </CardHeader>
+          </Card>
+        </SkeletonWrapper>
+      </div>
+    )
+  }
+
   return (
     <div className="p-4">
-      <CafeProfile cafe={cafe} onChange={handleUpdatedCafe} />
-      <hr className="my-4" />
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Menu</h1>
-        <CreateItemDialog onChange={handleNewItemChange}>
-          <Button>
-            Create Item
-          </Button>
-        </CreateItemDialog>
+      <h1 className="mb-4 text-3xl font-bold">Cafe</h1>
+      <div className="flex gap-4">
+        {cafe?.image ? (
+          <div className="relative w-fit">
+            <Image
+              src={`${BACKEND_URL}/cafes/${cafe.image}`}
+              width={200}
+              height={200}
+              alt="cafeImage"
+              className="rounded-lg max-h-[200px]"
+            />
+            <EditCafeImageDialog onChange={handleUpdatedCafe}>
+              <Button
+                size={"icon"}
+                variant={"secondary"}
+                className="absolute rounded-full top-1 right-1"
+              >
+                <Pencil />
+              </Button>
+            </EditCafeImageDialog>
+          </div>
+        ) : (
+          <div className="relative w-fit">
+            <Card className="w-[200px] h-[100px] flex justify-center items-center">
+              <Images className="text-muted-foreground" />
+            </Card>
+            <EditCafeImageDialog onChange={handleUpdatedCafe}>
+              <Button
+                size={"icon"}
+                variant={"secondary"}
+                className="absolute rounded-full top-1 right-1"
+              >
+                <Plus />
+              </Button>
+            </EditCafeImageDialog>
+          </div>
+        )}
+        {cafe && (
+          <EditCafeForm cafe={cafe} onChange={handleUpdatedCafe} />
+        )}
       </div>
-      <ItemFeed items={items} isLoading={loading} onAvailableItem={handleItemChange} onItemDelete={handleItemDelete} />
     </div>
   )
 }

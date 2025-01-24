@@ -1,4 +1,7 @@
-"use client"
+import { Card, CardContent } from "@/components/ui/card"
+import useAxiosPrivate from "@/hooks/use-axios-private"
+import { Cafe } from "@/types/cafe";
+import { useState } from "react"
 import {
   toast
 } from "sonner"
@@ -20,20 +23,10 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import useAxiosPrivate from "@/hooks/use-axios-private"
 import { Input } from "@/components/ui/input"
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { ReactNode, useState } from "react";
-import { Cafe } from "@/types/cafe"
 import { Loader2 } from "lucide-react"
 
-interface Props {
-  children: ReactNode
-  cafe: Cafe
-  onChange: (updatedCafe: Cafe) => void
-}
-
-const formSchema = z.object({
+const FormSchema = z.object({
   name: z.string().min(3, {
     message: "Name must atleast 3 charaters"
   }).max(30, {
@@ -42,7 +35,6 @@ const formSchema = z.object({
   description: z.string().max(60, {
     message: "Maximum description is up to 30 characters only"
   }).optional(),
-  cafeImage: z.string().optional(),
   block: z.string().min(1, {
     message: "Block must atleast 1 charater"
   }).max(10, {
@@ -55,23 +47,26 @@ const formSchema = z.object({
   }),
 });
 
+interface Props {
+  cafe: Cafe
+  onChange: (cafe: Cafe) => void
+}
 
-export default function EditCafeDialog({ children, cafe, onChange }: Props) {
+export default function EditCafeForm({ cafe, onChange }: Props) {
   const axiosPrivate = useAxiosPrivate()
-  const [open, setOpen] = useState(false)
   const [pending, setPending] = useState(false)
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
     defaultValues: {
-      name: cafe.name,
-      description: cafe.description,
-      block: cafe.block,
-      lot: cafe.lot,
+      name: cafe ? cafe?.name : "",
+      description: cafe ? cafe?.description : "",
+      block: cafe ? cafe?.block : "",
+      lot: cafe ? cafe?.lot : "",
     },
-  })
+  });
 
-  async function onSubmit(data: z.infer<typeof formSchema>) {
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
       setPending(true)
       const response = await axiosPrivate.put("/api/v1/cafes",
@@ -85,7 +80,6 @@ export default function EditCafeDialog({ children, cafe, onChange }: Props) {
       onChange(response.data.data)
       toast.success("Edit cafe successfull")
       setPending(false)
-      setOpen(false)
     } catch (error) {
       setPending(false)
       if (!error?.response) {
@@ -99,16 +93,10 @@ export default function EditCafeDialog({ children, cafe, onChange }: Props) {
     }
   }
 
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        {children}
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Edit Cafe</DialogTitle>
-          <DialogDescription>Please change the form below to edit your cafe.</DialogDescription>
-        </DialogHeader>
+    <Card>
+      <CardContent className="mt-6">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
@@ -165,21 +153,18 @@ export default function EditCafeDialog({ children, cafe, onChange }: Props) {
                 )}
               />
             </div>
-            <DialogFooter>
-              <DialogClose asChild>
-                <Button variant={"secondary"}>Close</Button>
-              </DialogClose>
+            <div className="flex justify-end items-end">
               <Button
-                disabled={pending || !form.formState.isDirty}
                 type="submit"
+                disabled={pending || !form.formState.isDirty}
               >
-                {pending ? (<Loader2 className="animate-spin" />) : "Done"}
+                {pending ? (<Loader2 />) : "Save"}
               </Button>
-            </DialogFooter>
+            </div>
           </form>
         </Form>
-      </DialogContent>
-    </Dialog>
+      </CardContent>
+    </Card>
   )
 }
 
