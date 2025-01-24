@@ -47,11 +47,24 @@ export default function CompleteOrderDialog({ children, order, onChange }: Props
         </DialogHeader>
         <DialogFooter>
           <DialogClose asChild>
-            <Button disabled={pending} variant={"secondary"}>
+            <Button
+              disabled={pending}
+              variant={"secondary"}
+              onClick={(e) => {
+                e.stopPropagation()
+              }}
+            >
               Close
             </Button>
           </DialogClose>
-          <Button disabled={pending} onClick={() => cancelOrder(order.id)}>
+          <Button
+            disabled={pending}
+            onClick={(e) => {
+              cancelOrder(order.id)
+              e.stopPropagation()
+            }
+            }
+          >
             {pending ? (<Loader2 className="animate-spin" />) : "Complete"}
           </Button>
         </DialogFooter>

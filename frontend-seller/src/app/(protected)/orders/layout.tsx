@@ -18,7 +18,7 @@ export default function OrderLayout({
 
   return (
     <div className="p-4">
-      <div className='flex gap-4'>
+      <div className='flex gap-4 mb-4'>
         <h1 className="text-3xl font-bold">Orders</h1>
         <Card className='flex w-[400px]'>
           {items.map((item) => (

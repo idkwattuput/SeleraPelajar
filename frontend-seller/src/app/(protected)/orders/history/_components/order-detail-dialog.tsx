@@ -54,27 +54,24 @@ export default function OrderDetailDialog({ children, order }: Props) {
 function StatusText({ status }: { status: "PENDING" | "PREPARING" | "COMPLETED" | "CANCELLED" }) {
   return (
     <DialogTitle className="flex flex-col lg:flex-row items-center gap-2">
+      Order Detail
       {status === "PENDING" && (
         <>
-          We&apos;re reviewing your order details. Please hold on!
           <Badge className="bg-muted-foreground">{status}</Badge>
         </>
       )}
       {status === "PREPARING" && (
         <>
-          Your order is being prepared. Stay tuned for updates!
           <Badge className="bg-yellow-500">{status}</Badge>
         </>
       )}
       {status === "COMPLETED" && (
         <>
-          Order completed successfully. Please pickup your order!
           <Badge className="bg-emerald-500">{status}</Badge>
         </>
       )}
       {status === "CANCELLED" && (
         <>
-          Your order has been cancelled
           <Badge className="bg-red-500">{status}</Badge>
         </>
       )}

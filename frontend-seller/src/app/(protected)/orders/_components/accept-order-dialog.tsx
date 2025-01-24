@@ -45,11 +45,23 @@ export default function AcceptOrderDialog({ children, order, onChange }: Props) 
         </DialogHeader>
         <DialogFooter>
           <DialogClose asChild>
-            <Button disabled={pending} variant={"secondary"}>
+            <Button
+              disabled={pending}
+              variant={"secondary"}
+              onClick={(e) => {
+                e.stopPropagation()
+              }}
+            >
               Close
             </Button>
           </DialogClose>
-          <Button disabled={pending} onClick={() => acceptOrder(order.id)}>
+          <Button
+            disabled={pending}
+            onClick={(e) => {
+              acceptOrder(order.id)
+              e.stopPropagation()
+            }}
+          >
             {pending ? (<Loader2 className="animate-spin" />) : "Confirm"}
           </Button>
         </DialogFooter>

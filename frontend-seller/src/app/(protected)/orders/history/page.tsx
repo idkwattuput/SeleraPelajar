@@ -33,8 +33,7 @@ export default function HistoryOrders() {
 
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl lg:text-3xl font-bold">History Orders</h1>
+    <div>
       <OrderHistoryFeed isLoading={loading} orders={orders} />
     </div>
   )

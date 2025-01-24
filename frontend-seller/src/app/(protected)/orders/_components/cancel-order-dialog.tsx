@@ -47,16 +47,30 @@ export default function CancelOrderDialog({ children, order, onChange }: Props) 
         </DialogHeader>
         <DialogFooter>
           <DialogClose asChild>
-            <Button disabled={pending} variant={"secondary"}>
+            <Button
+              disabled={pending}
+              variant={"secondary"}
+              onClick={(e) => {
+                e.stopPropagation()
+              }}
+            >
               Close
             </Button>
           </DialogClose>
-          <Button disabled={pending} variant={"destructive"} onClick={() => cancelOrder(order.id)}>
+          <Button
+            disabled={pending}
+            variant={"destructive"}
+            onClick={(e) => {
+              cancelOrder(order.id);
+              e.stopPropagation();
+            }
+            }
+          >
             {pending ? (<Loader2 className="animate-spin" />) : "Cancel"}
           </Button>
         </DialogFooter>
       </DialogContent>
-    </Dialog>
+    </Dialog >
   )
 }
 

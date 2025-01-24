@@ -88,6 +88,12 @@ async function findAllHistoryOrder(customerId: string, role: Role) {
               item: true,
             },
           },
+          customer: {
+            select: {
+              first_name: true,
+              last_name: true,
+            },
+          },
         },
         orderBy: {
           created_at: "desc",

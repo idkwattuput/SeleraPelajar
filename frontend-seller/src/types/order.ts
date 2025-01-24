@@ -1,3 +1,4 @@
+import { Customer } from "./customer";
 import { Item } from "./item";
 
 export interface Order {
@@ -5,6 +6,7 @@ export interface Order {
   total_price: string;
   status: "PENDING" | "PREPARING" | "COMPLETED" | "CANCELLED";
   customer_id: string;
+  customer: Customer;
   cafe_id: string;
   OrderItems: OrderItem[];
 }

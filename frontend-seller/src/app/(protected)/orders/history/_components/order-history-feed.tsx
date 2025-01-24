@@ -60,7 +60,7 @@ export default function OrderHistoryFeed({ isLoading, orders }: Props) {
                   order.status === "CANCELLED" && "bg-muted"
                 )}>
                   <CardHeader>
-                    <CardTitle className="flex flex-row justify-between items-center">{order.cafe.name}
+                    <CardTitle className="flex flex-row justify-between items-center">{order.customer.first_name} {order.customer.last_name}
                       {order.status === "CANCELLED" && (
                         <Badge
                           className="bg-red-500"
