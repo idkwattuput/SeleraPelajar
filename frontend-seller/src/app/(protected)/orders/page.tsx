@@ -5,6 +5,7 @@ import { io } from "socket.io-client";
 import { useEffect, useState } from "react"
 import OrderFeed from "./_components/order-feed"
 import useAxiosPrivate from "@/hooks/use-axios-private"
+import { Card } from "@/components/ui/card";
 
 export default function Order() {
   const BACKEND_URL = process.env.BACKEND_URL!
@@ -57,7 +58,6 @@ export default function Order() {
 
   return (
     <div className="p-4">
-      <h1 className="text-3xl font-bold">Current Orders</h1>
       <OrderFeed orders={orders} isLoading={loading} onCancelChange={handleCancelOrderChange} onAcceptChange={handleAcceptOrderChange} />
     </div>
   )
