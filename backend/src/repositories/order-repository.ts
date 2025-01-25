@@ -247,6 +247,16 @@ async function update(id: string, status: OrderStatus) {
   });
 }
 
+async function weekRevenue(cafeId: string, minDate: Date, maxDate: Date) {
+  return prisma.orders.findMany({
+    where: {
+      cafe_id: cafeId,
+      created_at: { gte: minDate, lte: maxDate },
+      status: "COMPLETED",
+    },
+  });
+}
+
 export default {
   findAllCurrentOrder,
   findAllCurrentOrderSeller,
@@ -257,4 +267,5 @@ export default {
   findPopularItem,
   save,
   update,
+  weekRevenue,
 };

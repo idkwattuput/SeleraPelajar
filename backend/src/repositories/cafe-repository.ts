@@ -23,6 +23,14 @@ async function find(id: string) {
 async function findBySellerId(sellerId: string) {
   return await prisma.cafes.findUnique({
     where: { seller_id: sellerId },
+    include: {
+      seller: {
+        select: {
+          first_name: true,
+          last_name: true,
+        },
+      },
+    },
   });
 }
 
