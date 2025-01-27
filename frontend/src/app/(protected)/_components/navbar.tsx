@@ -60,7 +60,7 @@ export default function Navbar() {
       const notification = new Notification(title, options);
       notification.onclick = (event) => {
         event.preventDefault();
-        window.open(`/orders${order.id}`, '_blank'); // Adjust the URL to your order page
+        window.open(`/orders`, '_blank'); // Adjust the URL to your order page
       };
     }
   }

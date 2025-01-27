@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Bell, CircleUser } from "lucide-react";
+import { CircleUser } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import axios from "@/lib/axios";
@@ -21,14 +21,10 @@ export default function Navbar() {
     }
   }
 
-
   return (
     <nav className="flex justify-between items-center p-4 border-b border-muted">
       <h1 className="text-3xl font-bold">Selera Pelajar</h1>
       <div className="flex items-center gap-4">
-        <Button variant={"ghost"} size={"icon"}>
-          <Bell />
-        </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
