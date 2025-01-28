@@ -69,7 +69,7 @@ export default function Sidebar() {
   ];
 
   return (
-    <aside className="p-4 w-[300px] flex flex-col justify-between items-center border-r border-muted">
+    <aside className="p-4 hidden lg:w-[250px] xl:w-[300px] lg:flex flex-col justify-between items-center border-r border-muted">
       <div className="w-full flex flex-col gap-4">
         {items.map((item) => (
           <NavbarItem key={item.label} lable={item.label} link={item.href} icon={item.icon} counter={orderCount} />
