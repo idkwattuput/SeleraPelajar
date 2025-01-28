@@ -47,7 +47,6 @@ export default function Dashboard() {
         <h1 className="text-4xl font-bold">Welcome, {name}</h1>
       )}
       <Summary summary={summary} isLoading={loading} />
-
       <div className="mt-4">
         <WeekRevenueChart revenueSummary={revenue} />
       </div>

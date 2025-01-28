@@ -23,11 +23,11 @@ const chartConfig = {
 
 export function WeekRevenueChart({ revenueSummary }: Props) {
   return (
-    <Card className="p-4">
+    <Card className="">
       <CardHeader>
         <CardTitle>Weekly Revenue</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-0 md:p-6">
         <ChartContainer config={chartConfig} className="max-h-[500px] w-full">
           <BarChart accessibilityLayer data={revenueSummary} width={500} height={300}>
             <CartesianGrid vertical={false} />

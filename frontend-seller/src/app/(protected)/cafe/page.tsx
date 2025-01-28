@@ -62,7 +62,7 @@ export default function Cafe() {
   return (
     <div className="p-4">
       <h1 className="mb-4 text-3xl font-bold">Cafe</h1>
-      <div className="flex gap-4">
+      <div className="flex flex-col md:flex-row gap-4">
         {cafe?.image ? (
           <div className="relative w-fit">
             <Image

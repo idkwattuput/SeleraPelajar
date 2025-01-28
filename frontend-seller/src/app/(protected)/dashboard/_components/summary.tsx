@@ -24,7 +24,7 @@ export default function Summary({ summary, isLoading }: Props) {
   }
 
   return (
-    <div className="mt-4 grid grid-cols-4 gap-4">
+    <div className="mt-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
       <Card>
         <CardHeader>
           <CardDescription className="text-primary">Order Today</CardDescription>

@@ -24,10 +24,6 @@ interface Props {
 
 export default function OrderFeed({ orders, isLoading, onCancelChange, onAcceptChange }: Props) {
 
-  function countQuantityItem(items: OrderItem[]) {
-    return items.reduce((total, item) => total + item.quantity, 0)
-  }
-
   if (isLoading) {
     return (
       <SkeletonWrapper isLoading={isLoading}>
@@ -56,12 +52,11 @@ export default function OrderFeed({ orders, isLoading, onCancelChange, onAcceptC
     return formatter.format(date).replace(',', ''); // Remove
   }
 
-
   return (
     <>
       {orders.length > 0 ?
         (
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
             {orders.map((order) => (
               <OrderDetailDialog key={order.id} order={order}>
                 <Card className="transition ease-in-out hover:-translate-y-1 hover:scale-105">

@@ -63,7 +63,7 @@ export default function ItemFeed({ items, isLoading, onItemDelete, onAvailableIt
           <p>No Item Yet</p>
         </div>
       ) : (
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
           {isEditDialogOpen && (
             <EditItemDialog item={item} onChange={onAvailableItem} open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen} />
           )}
