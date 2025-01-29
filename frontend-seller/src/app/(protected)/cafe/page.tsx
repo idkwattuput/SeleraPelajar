@@ -10,6 +10,7 @@ import SkeletonWrapper from "@/components/skeleton-wrapper";
 import EditCafeImageDialog from "./_components/edit-cafe-image-dialog";
 import { Images, Pencil, Plus } from "lucide-react";
 import EditCafeForm from "./_components/edit-cafe-form";
+import { Switch } from "@/components/ui/switch";
 
 export default function Cafe() {
   const BACKEND_URL = process.env.BACKEND_URL!
@@ -34,6 +35,19 @@ export default function Cafe() {
 
   function handleUpdatedCafe(updatedCafe: Cafe) {
     setCafe(updatedCafe)
+  }
+
+  async function handleCheckChange(id: string, value: boolean) {
+    try {
+      const response = await axiosPrivate.put(`/api/v1/cafes/${id}`,
+        JSON.stringify({
+          isOpen: !!value
+        })
+      )
+      setCafe(response.data.data)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   if (loading) {
@@ -61,7 +75,15 @@ export default function Cafe() {
 
   return (
     <div className="p-4">
-      <h1 className="mb-4 text-3xl font-bold">Cafe</h1>
+      <div className="mb-4 flex items-center gap-4">
+        <h1 className="text-3xl font-bold">Cafe</h1>
+        {cafe && (
+          <div className="flex items-center gap-2">
+            <p>{cafe.is_open ? "Open" : "Close"}</p>
+            <Switch checked={!!cafe.is_open} onClick={() => handleCheckChange(cafe.id, !cafe.is_open)} />
+          </div>
+        )}
+      </div>
       <div className="flex flex-col md:flex-row gap-4">
         {cafe?.image ? (
           <div className="relative w-fit">

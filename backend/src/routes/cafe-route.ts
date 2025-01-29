@@ -29,6 +29,9 @@ router
   .put(upload.single("cafeImage"), verifyJWT, cafeController.updateCafeImage);
 router.route("/items").get(verifyJWT, cafeController.getItemsByCafeId);
 router.route("/seller").get(verifyJWT, cafeController.getCafeBySellerId);
-router.route("/:id").get(cafeController.getCafe);
+router
+  .route("/:id")
+  .get(cafeController.getCafe)
+  .put(cafeController.updateCafeOpen);
 
 export default router;

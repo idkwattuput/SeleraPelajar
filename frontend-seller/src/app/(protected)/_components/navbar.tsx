@@ -24,7 +24,6 @@ export default function Navbar() {
   const BACKEND_URL = process.env.BACKEND_URL!
   const router = useRouter()
   const axiosPrivate = useAxiosPrivate()
-  const [cartCounter, setCartCounter] = useState(0)
   const [orderCounter, setOrderCounter] = useState(0)
 
   async function requestNotificationPermission() {
@@ -39,7 +38,7 @@ export default function Navbar() {
   // Call this function when the user logs in or opens the page
   requestNotificationPermission();
 
-  function showNotification(title: string, order: Order, options: { body: string, icon: string, tag: string }) {
+  function showNotification(title: string, options: { body: string, icon: string, tag: string }) {
     if (Notification.permission === 'granted') {
       const notification = new Notification(title, options);
       notification.onclick = (event) => {
@@ -49,20 +48,20 @@ export default function Navbar() {
     }
   }
 
-  function notifyOrderStatusUpdate(order: Order, status: string) {
+  function notifyOrderStatusUpdate(status: string) {
     const notificationOptions = {
-      body: `Your order has been ${status}!`, // Example: Confirmed, Completed, or Cancelled
+      body: status, // Example: Confirmed, Completed, or Cancelled
       icon: '/favicon.ico', // Optional: A small icon for the notification
       tag: 'order-update', // Ensures only one notification per order
     };
 
-    showNotification('Order Status Update', order, notificationOptions);
+    showNotification('Order Status Update', notificationOptions);
   }
 
   useEffect(() => {
     async function getCurrentOrders() {
       try {
-        const response = await axiosPrivate.get("/api/v1/orders")
+        const response = await axiosPrivate.get("/api/v1/orders/seller")
         setOrderCounter(response.data.data.length)
       } catch (error) {
         console.log(error)
@@ -90,16 +89,13 @@ export default function Navbar() {
 
     socket.on("newOrder", (newData: Order) => {
       if (newData.status === "PENDING") {
-        notifyOrderStatusUpdate(newData, "confirm and on preparing")
+        notifyOrderStatusUpdate(`New order ${newData.id.slice(0, 3)} has been placed.`)
       }
     });
 
     socket.on("updateOrder", (newData: Order) => {
-      if (newData.status === "COMPLETED") {
-        notifyOrderStatusUpdate(newData, "completed")
-        setOrderCounter(prev => prev - 1)
-      } else {
-        notifyOrderStatusUpdate(newData, "cancelled")
+      if (newData.status === "CANCELLED") {
+        notifyOrderStatusUpdate(`Order ${newData.id.slice(0, 3)} has been cancelled`)
         setOrderCounter(prev => prev - 1)
       }
     });

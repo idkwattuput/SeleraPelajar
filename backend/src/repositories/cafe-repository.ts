@@ -106,6 +106,15 @@ async function updateImage(id: string, image: string) {
   });
 }
 
+async function updateOpen(id: string, isOpen: boolean) {
+  return await prisma.cafes.update({
+    where: { id: id },
+    data: {
+      is_open: isOpen,
+    },
+  });
+}
+
 export default {
   findAll,
   find,
@@ -114,4 +123,5 @@ export default {
   save,
   update,
   updateImage,
+  updateOpen,
 };

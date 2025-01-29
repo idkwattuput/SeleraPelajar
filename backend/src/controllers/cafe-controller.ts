@@ -132,6 +132,24 @@ async function updateCafeImage(
   }
 }
 
+async function updateCafeOpen(req: Request, res: Response, next: NextFunction) {
+  try {
+    const id = req.params.id;
+    const { isOpen } = req.body;
+    if (typeof isOpen !== "boolean") {
+      return res.status(400).json({ message: "All field are required" });
+    }
+    const isCafeExist = await cafeRepository.find(id);
+    if (!isCafeExist) {
+      return res.status(404).json({ message: "Cafe not found" });
+    }
+    const updatedCafe = await cafeRepository.updateOpen(id, isOpen);
+    return res.json({ data: updatedCafe });
+  } catch (error) {
+    next(error);
+  }
+}
+
 export default {
   getCafes,
   getCafe,
@@ -140,4 +158,5 @@ export default {
   createCafe,
   updateCafe,
   updateCafeImage,
+  updateCafeOpen,
 };
