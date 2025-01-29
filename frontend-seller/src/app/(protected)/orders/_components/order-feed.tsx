@@ -1,7 +1,7 @@
 import SkeletonWrapper from "@/components/skeleton-wrapper"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Order, OrderItem } from "@/types/order"
+import { Order } from "@/types/order"
 import { NotepadText } from "lucide-react"
 import CancelOrderDialog from "./cancel-order-dialog"
 import AcceptOrderDialog from "./accept-order-dialog"
@@ -10,7 +10,7 @@ import OrderDetailDialog from "./order-detail-dialog"
 import { Cafe } from "@/types/cafe"
 import { Badge } from "@/components/ui/badge"
 
-interface CustomOrder extends Order {
+export interface CustomOrder extends Order {
   cafe: Cafe
   created_at: string
 }
@@ -18,8 +18,8 @@ interface CustomOrder extends Order {
 interface Props {
   orders: CustomOrder[]
   isLoading: boolean
-  onCancelChange: (order: Order) => void
-  onAcceptChange: (order: Order) => void
+  onCancelChange: (order: CustomOrder) => void
+  onAcceptChange: (order: CustomOrder) => void
 }
 
 export default function OrderFeed({ orders, isLoading, onCancelChange, onAcceptChange }: Props) {

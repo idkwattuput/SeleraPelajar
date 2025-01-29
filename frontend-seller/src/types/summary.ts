@@ -4,5 +4,5 @@ export interface Summary {
   order_today: number;
   revenue_today: string;
   order_week: number;
-  popular_item: Item | string;
+  popular_item: Item | "none";
 }

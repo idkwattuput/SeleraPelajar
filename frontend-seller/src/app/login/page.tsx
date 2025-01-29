@@ -56,10 +56,13 @@ export default function Login() {
       toast.success("Sign In success 🎉")
       router.push("/dashboard")
     } catch (error) {
+      // @ts-expect-error "idk"
       if (!error?.response) {
         toast.error("Server not respond")
+        // @ts-expect-error "idk"
       } else if (error.response?.status === 400) {
         toast.warning("Input field empty")
+        // @ts-expect-error "idk"
       } else if (error.response?.status === 401) {
         toast.error("Email or password is incorrect")
       } else {

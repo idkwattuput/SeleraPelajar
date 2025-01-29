@@ -82,10 +82,13 @@ export default function EditCafeForm({ cafe, onChange }: Props) {
       setPending(false)
     } catch (error) {
       setPending(false)
+      // @ts-expect-error "idk"
       if (!error?.response) {
         toast.error("Server not respond")
+        // @ts-expect-error "idk"
       } else if (error.response?.status === 400) {
         console.log(error)
+        // @ts-expect-error "idk"
         toast.error(error.response.data.message)
       } else {
         toast.error("Internal Server Error")

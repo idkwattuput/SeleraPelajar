@@ -8,19 +8,19 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import CreateCategoryDialog from "./create-category-dialog"
 import { Check, ChevronsUpDown } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { Category } from "@/types/item"
 
 interface Props {
-  categoryName: string
+  categoryName?: string
   onChange: (value: string) => void
 }
 
 export default function CategoryComboBox({ categoryName, onChange }: Props) {
   const axiosPrivate = useAxiosPrivate()
-  const [loading, setLoading] = useState(true)
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState("")
   const [id, setId] = useState("")
-  const [categories, setCategories] = useState([])
+  const [categories, setCategories] = useState<Category[]>([])
 
   useEffect(() => {
     if (!id) return;
@@ -35,10 +35,8 @@ export default function CategoryComboBox({ categoryName, onChange }: Props) {
           signal: controller.signal
         })
         setCategories(response.data.data)
-        setLoading(false)
       } catch (error) {
         console.log(error)
-        setLoading(false)
       }
     }
 
@@ -51,7 +49,7 @@ export default function CategoryComboBox({ categoryName, onChange }: Props) {
 
   const selectedCategory = categories.find((category) => category.name === value || categoryName)
 
-  const successCallback = useCallback((category: any) => {
+  const successCallback = useCallback((category: Category) => {
     setCategories((prev) => [...prev, category])
     setValue(category.name)
     setId(category.id)
@@ -83,7 +81,7 @@ export default function CategoryComboBox({ categoryName, onChange }: Props) {
           <CommandGroup>
             <CommandList>
               {
-                categories && categories.map((category: any) => (
+                categories && categories.map((category: Category) => (
                   <CommandItem
                     key={category.name}
                     onSelect={() => {
@@ -109,7 +107,7 @@ export default function CategoryComboBox({ categoryName, onChange }: Props) {
   )
 }
 
-function CategoryRow({ category }: { category: any }) {
+function CategoryRow({ category }: { category: Category }) {
   return (
     <div className="flex items-center gap-2">
       <span>{category.name}</span>

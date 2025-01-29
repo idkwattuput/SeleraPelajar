@@ -83,8 +83,9 @@ export default function CreateItemDialog({ children, onChange }: Props) {
       const formData = new FormData()
       formData.append("name", data.name.trim());
       formData.append("description", data.description?.trim() || "");
-      formData.append("price", data.price);
+      formData.append("price", String(data.price));
       formData.append("categoryId", data.categoryId);
+      // @ts-expect-error "idk"
       formData.append("itemImage", files ? files[0] : null);
       const response = await axiosPrivate.post("/api/v1/items",
         formData,
@@ -163,7 +164,7 @@ export default function CreateItemDialog({ children, onChange }: Props) {
               <FormField
                 control={form.control}
                 name="categoryId"
-                render={({ field }) => (
+                render={({ }) => (
                   <FormItem className="grid gap-2">
                     <FormLabel>Category <span className="text-red-500">*</span></FormLabel>
                     <FormControl>
@@ -177,7 +178,7 @@ export default function CreateItemDialog({ children, onChange }: Props) {
             <FormField
               control={form.control}
               name="itemImage"
-              render={({ field }) => (
+              render={({ }) => (
                 <FormItem>
                   <FormLabel>Item Image</FormLabel>
                   <FormControl>

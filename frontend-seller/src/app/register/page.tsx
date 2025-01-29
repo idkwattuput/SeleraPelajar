@@ -74,10 +74,13 @@ export default function Register() {
       toast.success("Sign Up success 🎉")
       router.push("/setup")
     } catch (error) {
+      // @ts-expect-error "idk"
       if (!error?.response) {
         toast.error("Server not respond")
+        // @ts-expect-error "idk"
       } else if (error.response?.status === 400) {
         toast.warning("Input field empty")
+        // @ts-expect-error "idk"
       } else if (error.response?.status === 409) {
         toast.error("This email has been used")
       } else {

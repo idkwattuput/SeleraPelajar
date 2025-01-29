@@ -1,5 +1,6 @@
 "use client"
 import {
+  ReactNode,
   useState
 } from "react"
 import {
@@ -35,10 +36,8 @@ import {
   FileUploaderItem
 } from "@/components/ui/file-upload"
 import useAxiosPrivate from "@/hooks/use-axios-private"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { useRouter } from "next/navigation"
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Cafe } from "@/types/cafe"
 
 const formSchema = z.object({
   cafeImage: z.string().optional(),
@@ -70,10 +69,11 @@ export default function EditCafeImageDialog({ children, onChange }: Props) {
     },
   })
 
-  async function onSubmit(data: z.infer<typeof formSchema>) {
+  async function onSubmit() {
     try {
       setPending(true)
       const formData = new FormData()
+      // @ts-expect-error "idk"
       formData.append("cafeImage", files ? files[0] : null);
       const response = await axiosPrivate.put("/api/v1/cafes/image",
         formData,
@@ -90,10 +90,13 @@ export default function EditCafeImageDialog({ children, onChange }: Props) {
       setOpen(false)
     } catch (error) {
       setPending(false)
+      // @ts-expect-error "idk"
       if (!error?.response) {
         toast.error("Server not respond")
+        // @ts-expect-error "idk"
       } else if (error.response?.status === 400) {
         console.log(error)
+        // @ts-expect-error "idk"
         toast.error(error.response.data.message)
       } else {
         toast.error("Internal Server Error")
@@ -118,7 +121,7 @@ export default function EditCafeImageDialog({ children, onChange }: Props) {
             <FormField
               control={form.control}
               name="cafeImage"
-              render={({ field }) => (
+              render={({ }) => (
                 <FormItem>
                   <FormLabel>Cafe Image</FormLabel>
                   <FormControl>

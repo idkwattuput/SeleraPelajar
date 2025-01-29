@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Item } from "@/types/item"
 import {
@@ -132,7 +132,7 @@ export default function EditItemDialog({ item, open, onChange, onOpenChange }: P
               <FormField
                 control={form.control}
                 name="categoryId"
-                render={({ field }) => (
+                render={({ }) => (
                   <FormItem className="grid gap-2">
                     <FormLabel>Category <span className="text-red-500">*</span></FormLabel>
                     <FormControl>

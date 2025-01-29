@@ -8,7 +8,7 @@ interface Props {
   isLoading: boolean
 }
 
-export default function Summary({ summary, isLoading }: Props) {
+export default function SummaryFeed({ summary, isLoading }: Props) {
 
   if (isLoading) {
     return (
@@ -46,7 +46,7 @@ export default function Summary({ summary, isLoading }: Props) {
       <Card>
         <CardHeader>
           <CardDescription className="text-primary">Most Popular Item</CardDescription>
-          <CardTitle>{summary.popular_item?.name ? summary.popular_item.name : summary.popular_item}</CardTitle>
+          <CardTitle>{summary.popular_item !== "none" ? summary.popular_item.name : summary.popular_item}</CardTitle>
         </CardHeader>
       </Card>
     </div>

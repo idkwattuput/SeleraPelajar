@@ -88,10 +88,10 @@ export default function Setup() {
     try {
       const formData = new FormData()
       formData.append("name", data.name.trim());
-      formData.append("description", data.description?.trim() || null);
+      formData.append("description", data.description?.trim() || "");
       formData.append("block", data.block.trim());
       formData.append("lot", data.lot.trim());
-      formData.append("cafeImage", files ? files[0] : null);
+      formData.append("cafeImage", files ? files[0] : "");
       await axiosPrivate.post("/api/v1/cafes",
         formData,
         {
@@ -103,10 +103,13 @@ export default function Setup() {
       toast.success("Welcome to Selera Pelajar 🎉")
       router.push("/dashboard")
     } catch (error) {
+      // @ts-expect-error "idk"
       if (!error?.response) {
         toast.error("Server not respond")
+        // @ts-expect-error "idk"
       } else if (error.response?.status === 400) {
         console.log(error)
+        // @ts-expect-error "idk"
         toast.error(error.response.data.message)
       } else {
         toast.error("Internal Server Error")
@@ -185,7 +188,7 @@ export default function Setup() {
               <FormField
                 control={form.control}
                 name="cafeImage"
-                render={({ field }) => (
+                render={({ }) => (
                   <FormItem>
                     <FormLabel>Cafe Image</FormLabel>
                     <FormControl>

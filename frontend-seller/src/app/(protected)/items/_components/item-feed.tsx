@@ -8,16 +8,15 @@ import { Switch } from "@/components/ui/switch";
 import useAxiosPrivate from "@/hooks/use-axios-private";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import EditItemDialog from "./edit-item-dialog";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import DeleteItemDialog from "./delete-item-dialog"
 import EditItemImageDialog from "./edit-item-image-dialog";
-import { Button } from "@/components/ui/button";
 
 interface Props {
   items: Item[]
   isLoading: boolean
-  onAvailableItem: (item: Item) => Promise<void>
-  onItemDelete: (item: Item) => Promise<void>
+  onAvailableItem: (item: Item) => void
+  onItemDelete: (item: Item) => void
 }
 
 export default function ItemFeed({ items, isLoading, onItemDelete, onAvailableItem }: Props) {
@@ -64,14 +63,18 @@ export default function ItemFeed({ items, isLoading, onItemDelete, onAvailableIt
         </div>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-          {isEditDialogOpen && (
-            <EditItemDialog item={item} onChange={onAvailableItem} open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen} />
-          )}
-          {isDeleteDialogOpen && (
-            <DeleteItemDialog item={item} onChange={onItemDelete} open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen} />
-          )}
-          {isEditImageDialogOpen && (
-            <EditItemImageDialog item={item} onChange={onAvailableItem} open={isEditImageDialogOpen} onOpenChange={setIsEditImageDialogOpen} />
+          {item && (
+            <>
+              {isEditDialogOpen && (
+                <EditItemDialog item={item} onChange={onAvailableItem} open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen} />
+              )}
+              {isDeleteDialogOpen && (
+                <DeleteItemDialog item={item} onChange={onItemDelete} open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen} />
+              )}
+              {isEditImageDialogOpen && (
+                <EditItemImageDialog item={item} onChange={onAvailableItem} open={isEditImageDialogOpen} onOpenChange={setIsEditImageDialogOpen} />
+              )}
+            </>
           )}
           {items.map((i) => (
             <Card

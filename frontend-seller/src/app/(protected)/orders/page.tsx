@@ -3,13 +3,13 @@
 import type { Order } from "@/types/order"
 import { io } from "socket.io-client";
 import { useEffect, useState } from "react"
-import OrderFeed from "./_components/order-feed"
+import OrderFeed, { CustomOrder } from "./_components/order-feed"
 import useAxiosPrivate from "@/hooks/use-axios-private"
 
 export default function Order() {
   const BACKEND_URL = process.env.BACKEND_URL!
   const axiosPrivate = useAxiosPrivate()
-  const [orders, setOrders] = useState<Order[]>([])
+  const [orders, setOrders] = useState<CustomOrder[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export default function Order() {
     socket.on("connect", () => {
       console.log("Connected to the server");
     });
-    socket.on("newOrder", (newData: Order) => {
+    socket.on("newOrder", (newData: CustomOrder) => {
       setOrders(prev => [newData, ...prev]);
     });
 
@@ -48,7 +48,7 @@ export default function Order() {
     setOrders((prev) => prev.filter((o) => o.id !== order.id))
   }
 
-  function handleAcceptOrderChange(updatedOrder: Order) {
+  function handleAcceptOrderChange(updatedOrder: CustomOrder) {
     setOrders((prev) =>
       prev.map((o) => (o.id === updatedOrder.id ? updatedOrder : o))
     )

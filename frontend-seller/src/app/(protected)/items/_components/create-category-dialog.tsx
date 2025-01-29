@@ -9,9 +9,10 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/comp
 import { Input } from "@/components/ui/input";
 import useAxiosPrivate from "@/hooks/use-axios-private";
 import { toast } from "sonner";
+import { Category } from "@/types/item";
 
 interface Props {
-  successCallback: (category: any) => void
+  successCallback: (category: Category) => void
 }
 
 const FormSchema = z.object({
@@ -30,7 +31,7 @@ export default function CreateCategoryDialog({ successCallback }: Props) {
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
       setPending(true)
-      await axiosPrivate.post("/api/v1/category",
+      const response = await axiosPrivate.post("/api/v1/category",
         JSON.stringify({
           name: data.name,
         }),
@@ -43,7 +44,7 @@ export default function CreateCategoryDialog({ successCallback }: Props) {
       })
 
       toast.success(`Category ${data.name} created`)
-      successCallback(data)
+      successCallback(response.data.data)
       setPending(false)
       setOpen((prev) => !prev)
     } catch (error) {

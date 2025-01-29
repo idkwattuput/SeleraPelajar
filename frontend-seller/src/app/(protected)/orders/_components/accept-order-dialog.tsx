@@ -1,14 +1,14 @@
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import useAxiosPrivate from "@/hooks/use-axios-private"
-import { Order } from "@/types/order"
 import { Loader2 } from "lucide-react"
 import { ReactNode, useState } from "react"
+import { CustomOrder } from "./order-feed"
 
 interface Props {
   children: ReactNode
-  order: Order
-  onChange: (order: Order) => void
+  order: CustomOrder
+  onChange: (order: CustomOrder) => void
 }
 
 export default function AcceptOrderDialog({ children, order, onChange }: Props) {
