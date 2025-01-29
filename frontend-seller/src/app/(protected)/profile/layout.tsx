@@ -17,7 +17,7 @@ export default function ProfileLayout({
   ]
 
   return (
-    <div className="p-4 flex gap-10">
+    <div className="p-4 flex flex-col md:flex-row gap-10">
       <div className="flex flex-col gap-2">
         {items.map((item) => (
           <SidebarItem key={item.label} label={item.label} icon={item.icon} href={item.href} />
