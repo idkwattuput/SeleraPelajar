@@ -13,11 +13,11 @@ RUN bun install
 # Copy the rest of your app
 COPY . .
 
-RUN bunx prisma generate
-RUN bunx prisma migrate deploy
+# Build the Next.js app
+RUN bun run build
 
 # Expose the port your app uses
-EXPOSE 8000
+EXPOSE 3001
 
-# Start the backend server
-CMD ["bun", "run", "dev"]
+# Start the Next.js app
+CMD ["bun", "run", "start", "-p", "3001"]

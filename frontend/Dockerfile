@@ -1,8 +1,8 @@
 # Use Bun base image
-FROM oven/bun:latest
+FROM oven/bun:1.2-alpine
 
 # Set working directory
-WORKDIR /app
+WORKDIR /usr/src/app
 
 # Copy package.json, bun.lockb, and other necessary files
 COPY package.json bun.lockb ./
@@ -14,7 +14,7 @@ RUN bun install
 COPY . .
 
 # Build the Next.js app
-RUN bun next build
+RUN bun run build
 
 # Expose the port your app uses
 EXPOSE 3000
