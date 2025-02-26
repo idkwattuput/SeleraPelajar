@@ -22,6 +22,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Order } from "@/types/order";
+import { getRefreshToken } from "@/lib/cookies";
 
 const items = [
   { label: "Home", href: "/home" },
@@ -175,6 +176,16 @@ interface Props {
 }
 
 function DesktopNavbar({ cartCounter, orderCounter, logout }: Props) {
+  const [refreshToken, setRefreshToken] = useState(null)
+
+  useEffect(() => {
+    async function getToken() {
+      const grt = await getRefreshToken()
+      setRefreshToken(grt)
+    }
+    getToken()
+  }, [])
+
   return (
     <nav className="font-poppins hidden p-4 md:flex justify-between items-center border-b border-muted drop-shadow-sm">
       <div className="flex items-center gap-2">
@@ -206,9 +217,17 @@ function DesktopNavbar({ cartCounter, orderCounter, logout }: Props) {
             <Link href={"/profile"}>
               <DropdownMenuItem>Profile</DropdownMenuItem>
             </Link>
-            <DropdownMenuItem onClick={logout} className="text-red-500">
-              Logout
-            </DropdownMenuItem>
+            {refreshToken ? (
+              <DropdownMenuItem onClick={logout} className="text-red-500">
+                Logout
+              </DropdownMenuItem>
+            ) : (
+              <DropdownMenuItem>
+                <Link href={"/login"}>
+                  Login
+                </Link>
+              </DropdownMenuItem>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

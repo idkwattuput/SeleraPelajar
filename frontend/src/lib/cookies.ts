@@ -18,7 +18,7 @@ export async function setAccessToken(accessToken: string) {
 
 export async function getRefreshToken() {
   const cookieStore = await cookies();
-  return cookieStore.get("SPRT")?.value;
+  return cookieStore.get("refresh_token")?.value;
 }
 
 export async function isUserAuthenticated() {
@@ -26,8 +26,7 @@ export async function isUserAuthenticated() {
   const accessToken = cookieStore.get("SPAT")?.value;
   const refreshToken = cookieStore.get("refresh_token")?.value;
   if (!accessToken || !refreshToken) {
-    return false
+    return false;
   }
-  return true
+  return true;
 }
-
